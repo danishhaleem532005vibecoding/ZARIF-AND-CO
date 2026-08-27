@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zarif &amp; Co. — Luxury Pakistani Fashion</title>
+<meta name="description" content="Handcrafted luxury Pakistani clothing for men, women and kids. Shop kurtas, sherwanis, and formal wear with worldwide shipping." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: {
+      colors: {
+        cream: { DEFAULT: '#FAF8F5', dark: '#F2EFEA' },
+        ink: { DEFAULT: '#1A1A1A', light: '#3D3D3D' },
+        stone: { DEFAULT: '#8A8175', light: '#C5BFBA' },
+        gold: { DEFAULT: '#B8956A', deep: '#9A7B5A' },
+        burgundy: { DEFAULT: '#6E2D3A', deep: '#5A1F2B' },
+        rose: { soft: '#F5EDEB' },
+      },
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['Playfair Display', 'Georgia', 'serif'],
+      },
+    } },
+  };
+</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { background-color: #FAF8F5; color: #1A1A1A; letter-spacing: -0.01em; }
+::selection { background: #B8956A; color: white; }
+a { color: inherit; text-decoration: none; }
+.font-display { font-family: 'Playfair Display', Georgia, serif; }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #FAF8F5; }
+::-webkit-scrollbar-thumb { background: #C5BFBA; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #8A8175; }
+#mobile-menu { transition: max-height .3s ease-in-out, opacity .3s ease-in-out; }
+input:focus, textarea:focus, select:focus { outline: none; }
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.qty-input[type=number] { -moz-appearance: textfield; }
+.swatch.active { outline: 2px solid #1A1A1A; outline-offset: 2px; }
+.size-btn.active { background: #1A1A1A; color: #FAF8F5; border-color: #1A1A1A; }
+.toast { animation: toast-in .25s ease-out, toast-out .25s ease-in 2.5s forwards; }
+@keyframes toast-in { from { opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
+@keyframes toast-out { from { opacity:1; } to { opacity:0; visibility:hidden; } }
+.input-field { width:100%; padding: 0.75rem 1rem; background:#FAF8F5; border:1px solid rgba(26,26,26,0.12); font-size:0.875rem; }
+.input-field:focus { border-color:#B8956A; }
+.pay-option.active { border-color:#1A1A1A; background:#1A1A1A; color:#FAF8F5; }
+.tab-btn.active { border-color:#1A1A1A; color:#1A1A1A; }
+
+</style>
+</head>
+<body class="min-h-screen bg-cream">
+
+<div id="site-header"></div>
+
+<div id="app"></div>
+
+<div id="site-footer"></div>
+
+<!-- Toast for add-to-cart / wishlist notifications -->
+<div id="toast" class="hidden fixed bottom-6 right-6 z-[100] bg-ink text-cream px-5 py-3.5 text-sm shadow-2xl"></div>
+
+<script>
+/* ===== Product Database ===== */
+/* ============================================================
+   Zarif & Co. — Product Database
+   Shared across all pages. Images are free-to-use stock photos
+   (Pexels License — free for commercial use, no attribution required).
+   ============================================================ */
+
+const PX = (id) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1000`;
+
+const PRODUCTS = [
+  {
+    id: 1,
+    slug: "premium-white-linen-kurta",
+    name: "Premium White Linen Kurta",
+    description:
+      "Handcrafted from pure Egyptian linen, this classic white kurta features subtle tonal embroidery along the placket and cuffs. Perfect for Eid celebrations and formal gatherings.",
+    price: 5800,
+    originalPrice: 7200,
+    category: "Men",
+    gender: "men",
+    colors: ["White", "Cream", "Beige"],
+    sizes: ["S", "M", "L", "XL"],
+    badge: "new",
+    rating: 4.9,
+    reviewCount: 36,
+    fabric: "100% Egyptian Linen",
+    available: true,
+    images: [PX(9870336), PX(16777497), PX(16777516)],
+  },
+  {
+    id: 2,
+    slug: "burgundy-velvet-shalwar-kameez",
+    name: "Burgundy Velvet Shalwar Kameez",
+    description:
+      "Luxurious velvet ensemble with delicate gold zardozi handwork on the neckline and sleeves. A statement piece for winter weddings.",
+    price: 22500,
+    originalPrice: 28500,
+    category: "Women",
+    gender: "women",
+    colors: ["Burgundy", "Deep Emerald", "Navy"],
+    sizes: ["XS", "S", "M", "L"],
+    badge: "sale",
+    rating: 4.8,
+    reviewCount: 72,
+    fabric: "Velvet with Gold Thread Embroidery",
+    available: true,
+    images: [PX(1149962), PX(1149964), PX(1149963)],
+  },
+  {
+    id: 3,
+    slug: "navy-embroidered-sherwani",
+    name: "Navy Embroidered Sherwani",
+    description:
+      "Traditional sherwani in rich navy silk with intricate gold hand-embroidery across the collar and front panel. Includes matching silk churidar and gold button detailing.",
+    price: 38500,
+    originalPrice: null,
+    category: "Men",
+    gender: "men",
+    colors: ["Navy", "Black", "Deep Maroon"],
+    sizes: ["M", "L", "XL", "XXL"],
+    badge: "bestseller",
+    rating: 5.0,
+    reviewCount: 128,
+    fabric: "Pure Silk with Gold Zardozi",
+    available: true,
+    images: [PX(8802622), PX(9142248), PX(11279842)],
+  },
+  {
+    id: 4,
+    slug: "cream-gold-silk-dress",
+    name: "Cream & Gold Silk Dress",
+    description:
+      "A flowing silk dress with gold brocade detailing along the hemline. Features a fitted bodice and billowing skirt for an ethereal silhouette.",
+    price: 32000,
+    originalPrice: null,
+    category: "Women",
+    gender: "women",
+    colors: ["Cream", "Ivory", "Champagne"],
+    sizes: ["XS", "S", "M", "L"],
+    badge: "new",
+    rating: 4.7,
+    reviewCount: 45,
+    fabric: "Pure Silk with Gold Brocade",
+    available: true,
+    images: [PX(19098740), PX(15925046), PX(8140821)],
+  },
+  {
+    id: 5,
+    slug: "black-cotton-embroidered-kurta",
+    name: "Black Cotton Embroidered Kurta",
+    description:
+      "A modern take on tradition — black cotton kurta with subtle gold threadwork on the collar and cuffs. Breathable and refined.",
+    price: 6500,
+    originalPrice: 8200,
+    category: "Men",
+    gender: "men",
+    colors: ["Black", "Charcoal", "Midnight"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    badge: "sale",
+    rating: 4.6,
+    reviewCount: 89,
+    fabric: "100% Combed Cotton",
+    available: true,
+    images: [PX(32484281), PX(34741229), PX(16777494)],
+  },
+  {
+    id: 6,
+    slug: "emerald-velvet-traditional-outfit",
+    name: "Emerald Velvet Traditional Outfit",
+    description:
+      "Deep emerald velvet with ornate gold embroidery on the bodice and sleeves. This outfit includes a silk dupatta with gold trim.",
+    price: 27800,
+    originalPrice: null,
+    category: "Women",
+    gender: "women",
+    colors: ["Emerald", "Deep Green", "Teal"],
+    sizes: ["S", "M", "L"],
+    badge: "new",
+    rating: 4.9,
+    reviewCount: 54,
+    fabric: "Velvet with Silk Dupatta",
+    available: true,
+    images: [PX(15595418), PX(15595427), PX(15595434)],
+  },
+  {
+    id: 7,
+    slug: "kids-cream-gold-kurta",
+    name: "Kids Cream Gold Embroidered Kurta",
+    description:
+      "Adorable cream kurta for little ones with gentle gold embroidery. Soft cotton blend makes it comfortable for long celebrations.",
+    price: 4200,
+    originalPrice: null,
+    category: "Kids",
+    gender: "kids",
+    colors: ["Cream", "Light Gold"],
+    sizes: ["2-3Y", "4-5Y", "6-7Y", "8-9Y"],
+    badge: null,
+    rating: 4.8,
+    reviewCount: 23,
+    fabric: "Cotton Blend",
+    available: true,
+    images: [PX(31093707), PX(18627596), PX(12714637)],
+  },
+  {
+    id: 8,
+    slug: "peach-silk-salwar-suit",
+    name: "Peach Silk Salwar Suit",
+    description:
+      "Delicate peach silk salwar suit with floral embroidery. A light, airy option perfect for daytime celebrations and spring events.",
+    price: 19500,
+    originalPrice: 24500,
+    category: "Women",
+    gender: "women",
+    colors: ["Peach", "Blush", "Soft Coral"],
+    sizes: ["XS", "S", "M", "L"],
+    badge: "sale",
+    rating: 4.5,
+    reviewCount: 31,
+    fabric: "Pure Silk with Silk Dupatta",
+    available: true,
+    images: [PX(33335358), PX(9246696), PX(15595574)],
+  },
+];
+
+const REVIEWS = [
+  { id: 1, productId: 3, name: "Ahmed R.", rating: 5, date: "Jan 15, 2026", comment: "The quality of embroidery is extraordinary. I wore this to my brother's wedding and received so many compliments. The silk feels incredibly luxurious." },
+  { id: 2, productId: 2, name: "Fatima K.", rating: 5, date: "Feb 02, 2026", comment: "This velvet outfit exceeded my expectations. The gold detailing is so elegant and the fit is perfect. Customer service was also excellent." },
+  { id: 3, productId: 5, name: "Khalid M.", rating: 4, date: "Feb 20, 2026", comment: "Beautiful black kurta with subtle gold work. Perfect for evening events. Would recommend sizing up slightly for a more relaxed fit." },
+];
+
+function fmtPKR(n) {
+  return "PKR " + Number(n).toLocaleString("en-US");
+}
+
+function getProductBySlug(slug) {
+  return PRODUCTS.find((p) => p.slug === slug);
+}
+
+function getRelated(product, count = 4) {
+  return PRODUCTS.filter((p) => p.id !== product.id && p.gender === product.gender).slice(0, count).length
+    ? PRODUCTS.filter((p) => p.id !== product.id && p.gender === product.gender).slice(0, count)
+    : PRODUCTS.filter((p) => p.id !== product.id).slice(0, count);
+}
+
+/* ===== Cart Logic ===== */
+/* ============================================================
+   Zarif & Co. — Cart Logic (localStorage based)
+   Cart item shape: { slug, name, price, image, qty, size, color }
+   ============================================================ */
+
+const CART_KEY = "zarif_cart_v1";
+
+function getCart() {
+  try {
+    const raw = localStorage.getItem(CART_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveCart(cart) {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  renderCartBadge();
+}
+
+function addToCart(product, qty, size, color) {
+  const cart = getCart();
+  const existing = cart.find(
+    (item) => item.slug === product.slug && item.size === size && item.color === color
+  );
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    cart.push({
+      slug: product.slug,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+      qty: qty,
+      size: size,
+      color: color,
+    });
+  }
+  saveCart(cart);
+}
+
+function removeFromCart(index) {
+  const cart = getCart();
+  cart.splice(index, 1);
+  saveCart(cart);
+}
+
+function updateCartQty(index, qty) {
+  const cart = getCart();
+  if (!cart[index]) return;
+  cart[index].qty = Math.max(1, qty);
+  saveCart(cart);
+}
+
+function clearCart() {
+  saveCart([]);
+}
+
+function getCartCount() {
+  return getCart().reduce((sum, item) => sum + item.qty, 0);
+}
+
+function getCartSubtotal() {
+  return getCart().reduce((sum, item) => sum + item.qty * item.price, 0);
+}
+
+function renderCartBadge() {
+  const badge = document.getElementById("cart-count-badge");
+  if (!badge) return;
+  const count = getCartCount();
+  badge.textContent = count;
+  badge.style.display = count > 0 ? "flex" : "none";
+}
+
+document.addEventListener("DOMContentLoaded", renderCartBadge);
+
+/* ===== Wishlist Logic ===== */
+/* ============================================================
+   Zarif & Co. — Wishlist logic (localStorage based)
+   ============================================================ */
+
+const WISHLIST_KEY = "zarif_wishlist_v1";
+
+function getWishlist() {
+  try {
+    const raw = localStorage.getItem(WISHLIST_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveWishlist(list) {
+  localStorage.setItem(WISHLIST_KEY, JSON.stringify(list));
+}
+
+function isWishlisted(slug) {
+  return getWishlist().includes(slug);
+}
+
+function toggleWishlist(slug) {
+  let list = getWishlist();
+  if (list.includes(slug)) {
+    list = list.filter((s) => s !== slug);
+  } else {
+    list.push(slug);
+  }
+  saveWishlist(list);
+  return list.includes(slug);
+}
+
+/* ===== Shared Rendering Helpers ===== */
+/* ============================================================
+   Zarif & Co. — Shared rendering helpers
+   ============================================================ */
+
+function badgeClasses(badge) {
+  if (badge === "sale") return "bg-burgundy-deep";
+  if (badge === "new") return "bg-ink";
+  return "bg-gold-deep";
+}
+
+function starIcons(rating, size = 14) {
+  let html = "";
+  for (let i = 0; i < 5; i++) {
+    const filled = i < Math.round(rating);
+    html += `<i data-lucide="star" class="w-[${size}px] h-[${size}px] ${filled ? "text-gold fill-gold" : "text-stone-light"}"></i>`;
+  }
+  return html;
+}
+
+function productCardHTML(p) {
+  const badge = p.badge
+    ? `<span class="absolute top-3 left-3 px-2.5 py-1 text-[9px] uppercase tracking-[0.12em] font-bold text-white z-10 ${badgeClasses(p.badge)}">${p.badge}</span>`
+    : "";
+  const priceBlock = p.originalPrice
+    ? `<span class="text-xs text-stone line-through">${fmtPKR(p.originalPrice)}</span><span class="text-[10px] font-bold text-burgundy uppercase tracking-wide">Sale</span>`
+    : "";
+  return `
+  <article class="group relative">
+    <a href="#/product?slug=${p.slug}" class="block relative overflow-hidden bg-stone/10 aspect-[3/4] sm:aspect-[4/5]">
+      <img src="${p.images[0]}" alt="${p.name}" loading="lazy" class="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.06]" onerror="this.src='${p.images[1] || p.images[0]}'" />
+      ${p.images[1] ? `<img src="${p.images[1]}" alt="${p.name} alternate view" loading="lazy" class="absolute inset-0 w-full h-full object-cover object-top opacity-0 group-hover:opacity-100 transition-opacity duration-500" />` : ""}
+      ${badge}
+      <div class="absolute inset-0 bg-ink/0 group-hover:bg-ink/10 transition-colors duration-300 flex items-end justify-center pb-4 gap-2 z-10">
+        <button onclick="event.preventDefault(); quickAddToCart('${p.slug}')" class="opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300 bg-cream text-ink text-[10px] uppercase tracking-[0.1em] font-bold px-4 py-2.5 hover:bg-gold hover:text-ink shadow-lg">Quick Add</button>
+      </div>
+      <button aria-label="Add to wishlist" data-slug="${p.slug}" class="wishlist-btn absolute top-3 right-3 z-10 bg-cream/90 backdrop-blur-sm p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300 hover:text-burgundy hover:bg-cream ${typeof isWishlisted === "function" && isWishlisted(p.slug) ? "text-burgundy opacity-100" : ""}">
+        <i data-lucide="heart" class="w-[15px] h-[15px] ${typeof isWishlisted === "function" && isWishlisted(p.slug) ? "fill-burgundy" : ""}" style="stroke-width:1.5"></i>
+      </button>
+    </a>
+    <div class="mt-3.5">
+      <a href="#/product?slug=${p.slug}" class="block group/title">
+        <h3 class="text-sm font-medium tracking-tight text-ink group-hover/title:text-gold transition-colors duration-300 leading-snug">${p.name}</h3>
+      </a>
+      <p class="mt-1 text-[11px] text-stone tracking-wide">${p.category}</p>
+      <div class="mt-2 flex items-center gap-2.5">
+        <span class="text-sm font-semibold text-ink">${fmtPKR(p.price)}</span>
+        ${priceBlock}
+      </div>
+    </div>
+  </article>`;
+}
+
+function renderProductGrid(elId, items) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  if (!items.length) {
+    el.innerHTML = `<p class="col-span-full text-center text-stone text-sm py-8">No products found.</p>`;
+    return;
+  }
+  el.innerHTML = items.map(productCardHTML).join("");
+  if (window.lucide) lucide.createIcons();
+}
+
+function renderReviews(elId, reviews) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.innerHTML = reviews.map(r => `
+    <article class="bg-cream p-7 lg:p-9 shadow-[0_4px_30px_rgba(0,0,0,0.05)] relative">
+      <div class="flex items-center gap-1 mb-4">${starIcons(r.rating)}</div>
+      <p class="text-[15px] text-ink/90 leading-relaxed font-light tracking-tight">&quot;${r.comment}&quot;</p>
+      <div class="mt-6 pt-5 border-t border-ink/5 flex items-center justify-between">
+        <span class="text-sm font-medium text-ink">${r.name}</span>
+        <span class="text-[11px] text-stone tracking-wide">${r.date}</span>
+      </div>
+    </article>`).join("");
+  if (window.lucide) lucide.createIcons();
+}
+
+function renderInstagramGrid(elId) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const shots = [
+    PRODUCTS[0].images[1], PRODUCTS[2].images[2], PRODUCTS[5].images[1],
+    PRODUCTS[4].images[0], PRODUCTS[6].images[1], PRODUCTS[7].images[0],
+  ];
+  el.innerHTML = shots.map((src, i) => `
+    <a href="#" class="group relative overflow-hidden aspect-square block">
+      <img src="${src}" alt="Instagram post ${i + 1}" loading="lazy" class="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-110" />
+      <div class="absolute inset-0 bg-ink/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+        <i data-lucide="camera" class="w-5 h-5 text-cream" style="stroke-width:1.5"></i>
+      </div>
+    </a>`).join("");
+  if (window.lucide) lucide.createIcons();
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.remove("hidden");
+  toast.classList.remove("toast");
+  void toast.offsetWidth; // restart animation
+  toast.classList.add("toast");
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(() => toast.classList.add("hidden"), 3000);
+}
+
+function quickAddToCart(slug) {
+  const p = getProductBySlug(slug);
+  if (!p) return;
+  addToCart(p, 1, p.sizes[Math.floor(p.sizes.length / 2)], p.colors[0]);
+  showToast(`${p.name} added to cart`);
+}
+
+/* ===== Header Component ===== */
+/* ============================================================
+   Zarif & Co. — Shared Header (announcement bar + nav + mobile menu)
+   ============================================================ */
+
+function HEADER_HTML() {
+  const navItem = (label, href) =>
+    `<a href="${href}" class="text-[11px] uppercase tracking-[0.1em] text-ink/80 hover:text-gold transition-colors duration-300 font-medium">${label}</a>`;
+
+  return `
+  <div class="relative z-50 w-full bg-ink text-cream text-center text-[11px] sm:text-xs tracking-[0.08em] uppercase font-medium py-2.5 px-4">
+    <a href="#/shop?filter=sale" class="hover:text-gold transition-colors duration-300">
+      <span>Free Shipping on Orders Above PKR 10,000</span>
+      <span class="mx-3 opacity-40">|</span>
+      <span class="text-gold">Sale: Up to 30% Off Selected Items</span>
+    </a>
+  </div>
+
+  <header class="sticky top-0 z-40 w-full bg-cream/95 backdrop-blur-md border-b border-ink/5">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 lg:h-20 items-center justify-between">
+        <button id="menu-toggle" class="lg:hidden p-2 -ml-2 text-ink hover:text-gold transition-colors" aria-label="Toggle menu">
+          <i data-lucide="menu" id="icon-menu" class="w-[22px] h-[22px]" style="stroke-width:1.5"></i>
+          <i data-lucide="x" id="icon-close" class="w-[22px] h-[22px] hidden" style="stroke-width:1.5"></i>
+        </button>
+
+        <a href="#/" class="absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 flex flex-col items-center lg:items-start">
+          <span class="font-display text-xl sm:text-2xl lg:text-[1.6rem] font-semibold tracking-tight text-ink leading-none">
+            Zarif <span class="text-gold">&amp;</span> Co.
+          </span>
+          <span class="text-[9px] tracking-[0.2em] uppercase text-stone hidden sm:block">Luxury Pakistani Fashion</span>
+        </a>
+
+        <nav class="hidden lg:flex items-center gap-8">
+          ${navItem("Home", "#/")}
+          ${navItem("New Arrivals", "#/shop?filter=new")}
+          ${navItem("Men", "#/shop?gender=men")}
+          ${navItem("Women", "#/shop?gender=women")}
+          ${navItem("Kids", "#/shop?gender=kids")}
+          ${navItem("Sale", "#/shop?filter=sale")}
+          ${navItem("About", "#/about")}
+          ${navItem("Contact", "#/contact")}
+        </nav>
+
+        <div class="flex items-center gap-3 sm:gap-5">
+          <button id="search-toggle" aria-label="Search" class="p-2 hover:text-gold transition-colors text-ink/70">
+            <i data-lucide="search" class="w-[18px] h-[18px]" style="stroke-width:1.5"></i>
+          </button>
+          <a href="#/account" aria-label="Account" class="hidden sm:block p-2 hover:text-gold transition-colors text-ink/70">
+            <i data-lucide="user" class="w-[18px] h-[18px]" style="stroke-width:1.5"></i>
+          </a>
+          <a href="#/wishlist" aria-label="Wishlist" class="hidden sm:block p-2 hover:text-gold transition-colors text-ink/70">
+            <i data-lucide="heart" class="w-[18px] h-[18px]" style="stroke-width:1.5"></i>
+          </a>
+          <a href="#/cart" aria-label="Cart" class="p-2 hover:text-gold transition-colors text-ink/70 relative">
+            <i data-lucide="shopping-bag" class="w-[18px] h-[18px]" style="stroke-width:1.5"></i>
+            <span id="cart-count-badge" class="absolute top-0.5 right-0 min-w-[16px] h-4 px-1 bg-burgundy text-white text-[9px] font-bold rounded-full items-center justify-center" style="display:none;">0</span>
+          </a>
+        </div>
+      </div>
+
+      <div id="search-panel" class="hidden pb-4">
+        <form class="relative max-w-lg mx-auto lg:mx-0">
+          <input type="text" placeholder="Search for kurtas, sherwanis, dresses..." class="w-full px-4 py-2.5 bg-cream-dark border border-ink/10 text-sm text-ink placeholder:text-stone focus:outline-none focus:border-gold transition-colors" />
+          <button type="submit" aria-label="Search" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-stone hover:text-gold">
+            <i data-lucide="search" class="w-4 h-4" style="stroke-width:1.5"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="lg:hidden absolute left-0 right-0 top-[4rem] bg-cream border-b border-ink/5 shadow-xl shadow-black/5 overflow-hidden max-h-0 opacity-0 pointer-events-none transition-all duration-300 ease-in-out">
+      <nav class="flex flex-col px-6 py-4 gap-1">
+        <a href="#/" class="py-3 text-sm uppercase tracking-[0.08em] text-ink/80 hover:text-gold border-b border-ink/5 hover:pl-2 transition-all duration-200">Home</a>
+        <a href="#/shop?filter=new" class="py-3 text-sm uppercase tracking-[0.08em] text-ink/80 hover:text-gold border-b border-ink/5 hover:pl-2 transition-all duration-200">New Arrivals</a>
+        <a href="#/shop?gender=men" class="py-3 text-sm uppercase tracking-[0.08em] text-ink/80 hover:text-gold border-b border-ink/5 hover:pl-2 transition-all duration-200">Men</a>
+        <a href="#/shop?gender=women" class="py-3 text-sm uppercase tracking-[0.08em] text-ink/80 hover:text-gold border-b border-ink/5 hover:pl-2 transition-all duration-200">Women</a>
+        <a href="#/shop?gender=kids" class="py-3 text-sm uppercase tracking-[0.08em] text-ink/80 hover:text-gold border-b border-ink/5 hover:pl-2 transition-all duration-200">Kids</a>
+        <a href="#/shop?filter=sale" class="py-3 text-sm uppercase tracking-[0.08em] text-ink/80 hover:text-gold border-b border-ink/5 hover:pl-2 transition-all duration-200">Sale</a>
+        <a href="#/about" class="py-3 text-sm uppercase tracking-[0.08em] text-ink/80 hover:text-gold border-b border-ink/5 hover:pl-2 transition-all duration-200">About</a>
+        <a href="#/contact" class="py-3 text-sm uppercase tracking-[0.08em] text-ink/80 hover:text-gold hover:pl-2 transition-all duration-200">Contact</a>
+      </nav>
+    </div>
+  </header>`;
+}
+
+function renderHeader() {
+  const el = document.getElementById("site-header");
+  if (el) el.innerHTML = HEADER_HTML();
+}
+
+/* ===== Footer Component ===== */
+/* ============================================================
+   Zarif & Co. — Shared Footer
+   ============================================================ */
+
+function FOOTER_HTML() {
+  return `
+  <footer class="bg-ink text-cream">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-6">
+        <div class="lg:col-span-4">
+          <a href="#/" class="inline-block">
+            <span class="font-display text-2xl lg:text-[1.7rem] font-semibold tracking-tight text-cream leading-none">Zarif <span class="text-gold">&amp;</span> Co.</span>
+          </a>
+          <p class="mt-5 text-sm text-cream/50 leading-relaxed max-w-xs">Handcrafted luxury clothing for the modern Pakistani wardrobe. Tradition, refined.</p>
+          <div class="mt-6 flex items-center gap-4">
+            <a href="#" aria-label="Instagram" class="text-cream/60 hover:text-gold transition-colors"><i data-lucide="instagram" class="w-5 h-5" style="stroke-width:1.5"></i></a>
+            <a href="#" aria-label="Facebook" class="text-cream/60 hover:text-gold transition-colors"><i data-lucide="facebook" class="w-5 h-5" style="stroke-width:1.5"></i></a>
+            <a href="#" aria-label="WhatsApp" class="text-cream/60 hover:text-gold transition-colors"><i data-lucide="message-circle" class="w-5 h-5" style="stroke-width:1.5"></i></a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 lg:gap-8">
+            <div>
+              <h4 class="text-[11px] uppercase tracking-[0.15em] font-bold text-gold mb-5">Shop</h4>
+              <ul class="space-y-2.5">
+                <li><a href="#/shop?filter=new" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">New Arrivals</a></li>
+                <li><a href="#/shop?gender=men" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">Men</a></li>
+                <li><a href="#/shop?gender=women" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">Women</a></li>
+                <li><a href="#/shop?gender=kids" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">Kids</a></li>
+                <li><a href="#/shop?filter=sale" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">Sale</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-[11px] uppercase tracking-[0.15em] font-bold text-gold mb-5">Company</h4>
+              <ul class="space-y-2.5">
+                <li><a href="#/about" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">About Us</a></li>
+                <li><a href="#/contact" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">Contact</a></li>
+                <li><a href="#/shipping" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">Shipping</a></li>
+                <li><a href="#/returns" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">Returns</a></li>
+                <li><a href="#/size-guide" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">Size Guide</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-[11px] uppercase tracking-[0.15em] font-bold text-gold mb-5">Support</h4>
+              <ul class="space-y-2.5">
+                <li><a href="#/faq" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">FAQ</a></li>
+                <li><a href="#/privacy-policy" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">Privacy Policy</a></li>
+                <li><a href="#/terms-of-service" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">Terms of Service</a></li>
+                <li><a href="#/track-order" class="text-sm text-cream/60 hover:text-gold transition-colors duration-200">Track Order</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-[11px] uppercase tracking-[0.15em] font-bold text-gold mb-5">Contact</h4>
+              <ul class="space-y-2.5 text-sm text-cream/60">
+                <li class="flex items-start gap-2"><i data-lucide="map-pin" class="w-4 h-4 mt-0.5 shrink-0" style="stroke-width:1.5"></i>Gulberg III, Lahore, Pakistan</li>
+                <li class="flex items-start gap-2"><i data-lucide="phone" class="w-4 h-4 mt-0.5 shrink-0" style="stroke-width:1.5"></i>+92 300 1234567</li>
+                <li class="flex items-start gap-2"><i data-lucide="mail" class="w-4 h-4 mt-0.5 shrink-0" style="stroke-width:1.5"></i>hello@zarifandco.pk</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-14 pt-8 border-t border-cream/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-cream/30 tracking-wide">
+        <p>&copy; 2026 Zarif &amp; Co. All rights reserved.</p>
+        <div class="flex items-center gap-4">
+          <span>We accept:</span>
+          <span class="flex gap-2">
+            <span class="px-2 py-1 border border-cream/20 rounded text-cream/50">Visa</span>
+            <span class="px-2 py-1 border border-cream/20 rounded text-cream/50">JazzCash</span>
+            <span class="px-2 py-1 border border-cream/20 rounded text-cream/50">EasyPaisa</span>
+            <span class="px-2 py-1 border border-cream/20 rounded text-cream/50">COD</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>`;
+}
+
+function renderFooter() {
+  const el = document.getElementById("site-footer");
+  if (el) el.innerHTML = FOOTER_HTML();
+}
+
+/* ===== Shared Site Behaviors ===== */
+/* ============================================================
+   Zarif & Co. — Shared site behaviors (header, menu, etc.)
+   ============================================================ */
+
+function initMobileMenu() {
+  const menuToggle = document.getElementById("menu-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const iconMenu = document.getElementById("icon-menu");
+  const iconClose = document.getElementById("icon-close");
+  if (!menuToggle || !mobileMenu) return;
+
+  let menuOpen = false;
+  function closeMenu() {
+    menuOpen = false;
+    mobileMenu.style.maxHeight = "0";
+    mobileMenu.style.opacity = "0";
+    mobileMenu.classList.add("pointer-events-none");
+    iconMenu && iconMenu.classList.remove("hidden");
+    iconClose && iconClose.classList.add("hidden");
+  }
+  function openMenu() {
+    menuOpen = true;
+    mobileMenu.style.maxHeight = "28rem";
+    mobileMenu.style.opacity = "1";
+    mobileMenu.classList.remove("pointer-events-none");
+    iconMenu && iconMenu.classList.add("hidden");
+    iconClose && iconClose.classList.remove("hidden");
+  }
+  menuToggle.addEventListener("click", () => (menuOpen ? closeMenu() : openMenu()));
+  mobileMenu.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
+}
+
+function initWishlistButtons() {
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".wishlist-btn");
+    if (btn) {
+      e.preventDefault();
+      const slug = btn.dataset.slug;
+      if (slug && typeof toggleWishlist === "function") {
+        const active = toggleWishlist(slug);
+        btn.classList.toggle("text-burgundy", active);
+        btn.classList.toggle("opacity-100", active);
+        const icon = btn.querySelector("svg, i");
+        if (icon) icon.classList.toggle("fill-burgundy", active);
+        if (typeof showToast === "function") showToast(active ? "Added to wishlist" : "Removed from wishlist");
+      } else {
+        btn.classList.toggle("text-burgundy");
+      }
+    }
+  });
+}
+
+function initNewsletterForm() {
+  const form = document.getElementById("newsletter-form");
+  if (!form) return;
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const input = form.querySelector("input");
+    if (input.value.trim()) {
+      const label = document.getElementById("newsletter-label");
+      const icon = document.getElementById("newsletter-icon");
+      if (label) label.textContent = "Subscribed";
+      if (icon) {
+        icon.setAttribute("data-lucide", "check");
+        if (window.lucide) lucide.createIcons();
+      }
+      input.value = "";
+    }
+  });
+}
+
+function initSearchToggle() {
+  const btn = document.getElementById("search-toggle");
+  const panel = document.getElementById("search-panel");
+  if (!btn || !panel) return;
+  btn.addEventListener("click", () => {
+    panel.classList.toggle("hidden");
+    if (!panel.classList.contains("hidden")) {
+      const input = panel.querySelector("input");
+      if (input) input.focus();
+    }
+  });
+  const form = panel.querySelector("form");
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = form.querySelector("input").value.trim();
+      window.location.hash = "#/shop" + (q ? "?q=" + encodeURIComponent(q) : "");
+    });
+  }
+}
+
+function initSite() {
+  if (typeof renderHeader === "function") renderHeader();
+  if (typeof renderFooter === "function") renderFooter();
+  initMobileMenu();
+  initWishlistButtons();
+  initNewsletterForm();
+  initSearchToggle();
+  renderCartBadge();
+  if (window.lucide) lucide.createIcons();
+}
+
+document.addEventListener("DOMContentLoaded", initSite);
+
+/* ===== Route Data ===== */
+const ROUTES = {
+  "": {
+    title: "Zarif &amp; Co. \u2014 Luxury Pakistani Fashion",
+    body: "<div>\n  <!-- Hero -->\n  <section class=\"relative w-full overflow-hidden bg-ink\">\n    <div class=\"relative mx-auto max-w-7xl\">\n      <div class=\"grid lg:grid-cols-2 min-h-[85vh] lg:min-h-[92vh]\">\n        <div class=\"relative h-[55vh] lg:h-auto lg:order-2 overflow-hidden\">\n          <img src=\"https://images.pexels.com/photos/1149963/pexels-photo-1149963.jpeg?auto=compress&cs=tinysrgb&w=1200\" alt=\"Model wearing luxury Pakistani formal wear\" class=\"h-full w-full object-cover object-top scale-[1.02] hover:scale-105 transition-transform duration-[1.2s] ease-out\" />\n          <div class=\"absolute inset-0 bg-gradient-to-r from-ink/20 via-transparent to-ink/10\"></div>\n        </div>\n        <div class=\"relative flex flex-col justify-center px-6 sm:px-10 lg:px-16 lg:pl-20 py-16 lg:py-20 lg:order-1 bg-ink lg:bg-gradient-to-r lg:from-ink/95 lg:to-ink/30 z-10\">\n          <span class=\"inline-block text-[11px] sm:text-xs tracking-[0.25em] uppercase text-gold font-medium mb-5\">Spring / Summer 2026 Collection</span>\n          <h1 class=\"font-display text-4xl sm:text-5xl lg:text-[3.5rem] xl:text-[4.2rem] font-medium text-cream leading-[1.08] tracking-tight\">\n            Timeless Elegance <br class=\"hidden sm:block\" />\n            <span class=\"italic font-normal\">in Every Thread</span>\n          </h1>\n          <p class=\"mt-6 text-base lg:text-lg text-cream/70 max-w-lg leading-relaxed font-light\">\n            Handcrafted luxury pieces inspired by tradition and refined for the modern wardrobe. Discover our new arrivals.\n          </p>\n          <div class=\"mt-10 flex flex-wrap gap-4\">\n            <a href=\"#/shop?gender=men\" class=\"inline-flex items-center bg-cream text-ink px-7 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold hover:bg-gold hover:text-ink transition-all duration-300\">Shop Men</a>\n            <a href=\"#/shop?gender=women\" class=\"inline-flex items-center border border-cream/30 text-cream px-7 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold hover:bg-cream/10 hover:border-cream/60 transition-all duration-300\">Shop Women</a>\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <!-- New Arrivals -->\n  <section class=\"py-16 lg:py-24 w-full\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8\">\n      <div class=\"flex items-end justify-between mb-8 lg:mb-12\">\n        <div>\n          <h2 class=\"font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-ink tracking-tight leading-[1.1]\">New Arrivals</h2>\n          <p class=\"mt-2 text-sm text-stone tracking-wide\">Fresh pieces for the new season</p>\n        </div>\n        <a href=\"#/shop?filter=new\" class=\"hidden sm:inline-flex items-center text-[11px] uppercase tracking-[0.1em] text-ink border-b border-ink/20 pb-0.5 hover:border-gold hover:text-gold transition-colors duration-300 font-medium\">View All</a>\n      </div>\n      <div class=\"grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-8 lg:gap-y-12\" id=\"grid-new-arrivals\"></div>\n      <div class=\"mt-8 sm:hidden text-center\">\n        <a href=\"#/shop?filter=new\" class=\"inline-flex items-center text-xs uppercase tracking-[0.1em] text-ink border-b border-ink/20 pb-0.5 hover:border-gold hover:text-gold transition-colors duration-300 font-medium\">View All</a>\n      </div>\n    </div>\n  </section>\n\n  <!-- Featured Collections -->\n  <section class=\"w-full bg-cream\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24\">\n      <div class=\"text-center mb-10 lg:mb-14\">\n        <h2 class=\"font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-ink tracking-tight leading-[1.1]\">Featured Collections</h2>\n        <p class=\"mt-3 text-sm text-stone tracking-wide\">Browse our most loved categories</p>\n      </div>\n      <div class=\"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6\">\n        <a href=\"#/shop?gender=men\" class=\"group relative overflow-hidden block bg-ink\">\n          <div class=\"aspect-[4/5] overflow-hidden relative\">\n            <img src=\"https://images.pexels.com/photos/16777502/pexels-photo-16777502.jpeg?auto=compress&cs=tinysrgb&w=700\" alt=\"Men's collection\" class=\"w-full h-full object-cover transition-transform duration-[0.8s] ease-out group-hover:scale-[1.08]\" />\n            <div class=\"absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent\"></div>\n          </div>\n          <div class=\"absolute bottom-0 left-0 right-0 p-5 lg:p-7\">\n            <h3 class=\"font-display text-xl lg:text-2xl text-cream font-medium tracking-tight\">Men</h3>\n            <p class=\"text-sm text-cream/70 mt-1 tracking-wide\">Traditional &amp; Modern Wear</p>\n            <span class=\"mt-3 inline-block text-[10px] uppercase tracking-[0.15em] font-bold text-cream/80\">Shop Now</span>\n          </div>\n        </a>\n        <a href=\"#/shop?gender=women\" class=\"group relative overflow-hidden block bg-ink\">\n          <div class=\"aspect-[4/5] overflow-hidden relative\">\n            <img src=\"https://images.pexels.com/photos/1149964/pexels-photo-1149964.jpeg?auto=compress&cs=tinysrgb&w=700\" alt=\"Women's collection\" class=\"w-full h-full object-cover transition-transform duration-[0.8s] ease-out group-hover:scale-[1.08]\" />\n            <div class=\"absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent\"></div>\n          </div>\n          <div class=\"absolute bottom-0 left-0 right-0 p-5 lg:p-7\">\n            <h3 class=\"font-display text-xl lg:text-2xl text-cream font-medium tracking-tight\">Women</h3>\n            <p class=\"text-sm text-cream/70 mt-1 tracking-wide\">Elegant &amp; Refined</p>\n            <span class=\"mt-3 inline-block text-[10px] uppercase tracking-[0.15em] font-bold text-cream/80\">Shop Now</span>\n          </div>\n        </a>\n        <a href=\"#/shop?gender=kids\" class=\"group relative overflow-hidden block bg-ink\">\n          <div class=\"aspect-[4/5] overflow-hidden relative\">\n            <img src=\"https://images.pexels.com/photos/14325735/pexels-photo-14325735.jpeg?auto=compress&cs=tinysrgb&w=700\" alt=\"Kids collection\" class=\"w-full h-full object-cover transition-transform duration-[0.8s] ease-out group-hover:scale-[1.08]\" />\n            <div class=\"absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent\"></div>\n          </div>\n          <div class=\"absolute bottom-0 left-0 right-0 p-5 lg:p-7\">\n            <h3 class=\"font-display text-xl lg:text-2xl text-cream font-medium tracking-tight\">Kids</h3>\n            <p class=\"text-sm text-cream/70 mt-1 tracking-wide\">Charming Essentials</p>\n            <span class=\"mt-3 inline-block text-[10px] uppercase tracking-[0.15em] font-bold text-cream/80\">Shop Now</span>\n          </div>\n        </a>\n        <a href=\"#/shop?filter=sale\" class=\"group relative overflow-hidden block bg-ink\">\n          <div class=\"aspect-[4/5] overflow-hidden relative\">\n            <img src=\"https://images.pexels.com/photos/8140821/pexels-photo-8140821.jpeg?auto=compress&cs=tinysrgb&w=700\" alt=\"Sale collection\" class=\"w-full h-full object-cover transition-transform duration-[0.8s] ease-out group-hover:scale-[1.08]\" />\n            <div class=\"absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent\"></div>\n          </div>\n          <div class=\"absolute bottom-0 left-0 right-0 p-5 lg:p-7\">\n            <h3 class=\"font-display text-xl lg:text-2xl text-cream font-medium tracking-tight\">Sale</h3>\n            <p class=\"text-sm text-cream/70 mt-1 tracking-wide\">Up to 30% Off</p>\n            <span class=\"mt-3 inline-block text-[10px] uppercase tracking-[0.15em] font-bold text-gold\">Limited Time</span>\n          </div>\n        </a>\n      </div>\n    </div>\n  </section>\n\n  <!-- Best Sellers -->\n  <section class=\"py-16 lg:py-24 w-full\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8\">\n      <div class=\"flex items-end justify-between mb-8 lg:mb-12\">\n        <div>\n          <h2 class=\"font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-ink tracking-tight leading-[1.1]\">Best Sellers</h2>\n          <p class=\"mt-2 text-sm text-stone tracking-wide\">Loved by our customers</p>\n        </div>\n      </div>\n      <div class=\"grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-8 lg:gap-y-12\" id=\"grid-best-sellers\"></div>\n    </div>\n  </section>\n\n  <!-- Promo Banner -->\n  <section class=\"relative w-full overflow-hidden bg-burgundy-deep\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24\">\n      <div class=\"grid lg:grid-cols-2 gap-10 lg:gap-16 items-center\">\n        <div class=\"relative z-10 lg:pr-8\">\n          <span class=\"inline-block text-[11px] tracking-[0.2em] uppercase text-gold font-semibold\">Wedding Season</span>\n          <h2 class=\"font-display text-3xl sm:text-4xl lg:text-[2.8rem] text-cream leading-[1.1] mt-4 tracking-tight\">Celebrate in <span class=\"italic font-normal\">Style</span></h2>\n          <p class=\"mt-5 text-base lg:text-lg text-cream/70 leading-relaxed max-w-md\">\n            Discover our curated collection of wedding attire for brides, grooms, and guests. Each piece is handcrafted with devotion to tradition and luxury.\n          </p>\n          <a href=\"#/shop?filter=sale\" class=\"mt-8 inline-flex items-center bg-gold text-ink px-8 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-cream transition-colors duration-300\">Shop the Collection</a>\n        </div>\n        <div class=\"relative lg:-mr-12\">\n          <img src=\"https://images.pexels.com/photos/15925046/pexels-photo-15925046.jpeg?auto=compress&cs=tinysrgb&w=900\" alt=\"Wedding collection\" class=\"w-full h-72 sm:h-96 lg:h-[32rem] object-cover object-top shadow-2xl shadow-black/30\" />\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <!-- Kids Collection -->\n  <section class=\"py-16 lg:py-24 w-full\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8\">\n      <div class=\"flex items-end justify-between mb-8 lg:mb-12\">\n        <div>\n          <h2 class=\"font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-ink tracking-tight leading-[1.1]\">Kids Collection</h2>\n          <p class=\"mt-2 text-sm text-stone tracking-wide\">Adorable essentials for little ones</p>\n        </div>\n        <a href=\"#/shop?gender=kids\" class=\"hidden sm:inline-flex items-center text-[11px] uppercase tracking-[0.1em] text-ink border-b border-ink/20 pb-0.5 hover:border-gold hover:text-gold transition-colors duration-300 font-medium\">View All</a>\n      </div>\n      <div class=\"grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-8 lg:gap-y-12\" id=\"grid-kids\"></div>\n    </div>\n  </section>\n\n  <!-- Sale -->\n  <section class=\"py-16 lg:py-24 w-full bg-cream-dark\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8\">\n      <div class=\"flex items-end justify-between mb-8 lg:mb-12\">\n        <div>\n          <h2 class=\"font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-ink tracking-tight leading-[1.1]\">Sale</h2>\n          <p class=\"mt-2 text-sm text-stone tracking-wide\">Selected items at special prices</p>\n        </div>\n        <a href=\"#/shop?filter=sale\" class=\"hidden sm:inline-flex items-center text-[11px] uppercase tracking-[0.1em] text-ink border-b border-ink/20 pb-0.5 hover:border-gold hover:text-gold transition-colors duration-300 font-medium\">View All</a>\n      </div>\n      <div class=\"grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-8 lg:gap-y-12\" id=\"grid-sale\"></div>\n    </div>\n  </section>\n\n  <!-- Customer Reviews -->\n  <section class=\"w-full bg-cream-dark py-16 lg:py-24\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8\">\n      <div class=\"text-center mb-10 lg:mb-14\">\n        <h2 class=\"font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-ink tracking-tight leading-[1.1]\">What Our Customers Say</h2>\n        <p class=\"mt-3 text-sm text-stone tracking-wide\">Real stories from people who wear Zarif &amp; Co.</p>\n      </div>\n      <div class=\"grid md:grid-cols-3 gap-6 lg:gap-8\" id=\"grid-reviews\"></div>\n    </div>\n  </section>\n\n  <!-- Instagram -->\n  <section class=\"w-full bg-ink py-12 lg:py-16\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8\">\n      <div class=\"flex items-center justify-between mb-8\">\n        <div>\n          <h2 class=\"font-display text-2xl sm:text-3xl text-cream font-medium tracking-tight\">Follow <span class=\"italic font-normal text-gold\">@zarifandco</span></h2>\n          <p class=\"text-sm text-cream/50 mt-1\">Tag your looks with #ZarifAndCo</p>\n        </div>\n        <a href=\"#\" class=\"hidden sm:inline-flex items-center gap-2 bg-cream text-ink px-5 py-2.5 text-[10px] uppercase tracking-[0.1em] font-bold hover:bg-gold transition-colors duration-300\">\n          <i data-lucide=\"camera\" class=\"w-[15px] h-[15px]\" style=\"stroke-width:1.5\"></i> Follow Us\n        </a>\n      </div>\n      <div class=\"grid grid-cols-3 sm:grid-cols-6 gap-2 lg:gap-3\" id=\"grid-instagram\"></div>\n    </div>\n  </section>\n\n  <!-- Newsletter -->\n  <section class=\"w-full bg-cream-dark py-14 lg:py-20\">\n    <div class=\"mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center\">\n      <h2 class=\"font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-medium text-ink tracking-tight leading-[1.1]\">Stay <span class=\"italic font-normal text-gold-deep\">Informed</span></h2>\n      <p class=\"mt-3 text-sm text-stone tracking-wide\">Subscribe to receive updates on new arrivals, exclusive offers, and behind-the-scenes stories.</p>\n      <form id=\"newsletter-form\" class=\"mt-8 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto\">\n        <input type=\"email\" required placeholder=\"Enter your email address\" class=\"flex-1 px-5 py-3.5 bg-cream border border-ink/10 text-sm text-ink placeholder:text-stone focus:outline-none focus:border-gold transition-colors\" />\n        <button type=\"submit\" class=\"inline-flex items-center justify-center gap-2 bg-ink text-cream px-7 py-3.5 text-[11px] uppercase tracking-[0.1em] font-bold hover:bg-burgundy transition-colors duration-300\">\n          <span id=\"newsletter-label\">Subscribe</span>\n          <i data-lucide=\"arrow-right\" id=\"newsletter-icon\" class=\"w-[14px] h-[14px]\" style=\"stroke-width:2\"></i>\n        </button>\n      </form>\n      <p class=\"mt-4 text-[11px] text-stone tracking-wide\">No spam, unsubscribe anytime.</p>\n    </div>\n  </section>\n</div>",
+    init: function(params) {
+const newArrivals = PRODUCTS.filter(p => p.badge === "new");
+  const bestSellers = PRODUCTS.filter(p => p.badge === "bestseller" || p.reviewCount > 80);
+  const kidsProducts = PRODUCTS.filter(p => p.gender === "kids");
+  const saleProducts = PRODUCTS.filter(p => p.badge === "sale");
+
+  renderProductGrid("grid-new-arrivals", newArrivals);
+  renderProductGrid("grid-best-sellers", bestSellers);
+  renderProductGrid("grid-kids", kidsProducts);
+  renderProductGrid("grid-sale", saleProducts);
+  renderReviews("grid-reviews", REVIEWS);
+  renderInstagramGrid("grid-instagram");
+    }
+  },
+  "shop": {
+    title: "Shop All \u2014 Zarif &amp; Co.",
+    body: "<div>\n  <div class=\"bg-cream-dark border-b border-ink/5\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12\">\n      <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\"><a href=\"#/\" class=\"hover:text-gold\">Home</a> / <span id=\"breadcrumb-label\" class=\"text-ink\">Shop All</span></p>\n      <h1 id=\"shop-title\" class=\"font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-ink tracking-tight\">Shop All</h1>\n      <p id=\"shop-subtitle\" class=\"mt-2 text-sm text-stone\">Handcrafted luxury, made for every occasion.</p>\n    </div>\n  </div>\n\n  <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-14\">\n    <div class=\"grid lg:grid-cols-[240px_1fr] gap-10\">\n\n      <!-- Sidebar filters -->\n      <aside class=\"hidden lg:block\">\n        <div class=\"sticky top-24 space-y-8\">\n          <div>\n            <h3 class=\"text-[11px] uppercase tracking-[0.15em] font-bold text-ink mb-4\">Category</h3>\n            <div class=\"space-y-2.5\" id=\"filter-gender\">\n              <label class=\"flex items-center gap-2.5 text-sm text-ink/80 cursor-pointer hover:text-gold\">\n                <input type=\"checkbox\" value=\"men\" class=\"gender-filter accent-ink w-4 h-4\" /> Men\n              </label>\n              <label class=\"flex items-center gap-2.5 text-sm text-ink/80 cursor-pointer hover:text-gold\">\n                <input type=\"checkbox\" value=\"women\" class=\"gender-filter accent-ink w-4 h-4\" /> Women\n              </label>\n              <label class=\"flex items-center gap-2.5 text-sm text-ink/80 cursor-pointer hover:text-gold\">\n                <input type=\"checkbox\" value=\"kids\" class=\"gender-filter accent-ink w-4 h-4\" /> Kids\n              </label>\n            </div>\n          </div>\n\n          <div>\n            <h3 class=\"text-[11px] uppercase tracking-[0.15em] font-bold text-ink mb-4\">Status</h3>\n            <div class=\"space-y-2.5\" id=\"filter-badge\">\n              <label class=\"flex items-center gap-2.5 text-sm text-ink/80 cursor-pointer hover:text-gold\">\n                <input type=\"checkbox\" value=\"new\" class=\"badge-filter accent-ink w-4 h-4\" /> New Arrivals\n              </label>\n              <label class=\"flex items-center gap-2.5 text-sm text-ink/80 cursor-pointer hover:text-gold\">\n                <input type=\"checkbox\" value=\"bestseller\" class=\"badge-filter accent-ink w-4 h-4\" /> Best Sellers\n              </label>\n              <label class=\"flex items-center gap-2.5 text-sm text-ink/80 cursor-pointer hover:text-gold\">\n                <input type=\"checkbox\" value=\"sale\" class=\"badge-filter accent-ink w-4 h-4\" /> On Sale\n              </label>\n            </div>\n          </div>\n\n          <div>\n            <h3 class=\"text-[11px] uppercase tracking-[0.15em] font-bold text-ink mb-4\">Price Range</h3>\n            <div class=\"space-y-2.5\" id=\"filter-price\">\n              <label class=\"flex items-center gap-2.5 text-sm text-ink/80 cursor-pointer hover:text-gold\">\n                <input type=\"radio\" name=\"price\" value=\"all\" checked class=\"accent-ink w-4 h-4\" /> All Prices\n              </label>\n              <label class=\"flex items-center gap-2.5 text-sm text-ink/80 cursor-pointer hover:text-gold\">\n                <input type=\"radio\" name=\"price\" value=\"0-6000\" class=\"accent-ink w-4 h-4\" /> Under PKR 6,000\n              </label>\n              <label class=\"flex items-center gap-2.5 text-sm text-ink/80 cursor-pointer hover:text-gold\">\n                <input type=\"radio\" name=\"price\" value=\"6000-20000\" class=\"accent-ink w-4 h-4\" /> PKR 6,000 \u2013 20,000\n              </label>\n              <label class=\"flex items-center gap-2.5 text-sm text-ink/80 cursor-pointer hover:text-gold\">\n                <input type=\"radio\" name=\"price\" value=\"20000-999999\" class=\"accent-ink w-4 h-4\" /> PKR 20,000+\n              </label>\n            </div>\n          </div>\n\n          <button id=\"clear-filters\" class=\"text-[11px] uppercase tracking-[0.1em] text-burgundy border-b border-burgundy/30 hover:border-burgundy pb-0.5 font-medium\">Clear All Filters</button>\n        </div>\n      </aside>\n\n      <!-- Product grid -->\n      <div>\n        <div class=\"flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-ink/5\">\n          <p class=\"text-sm text-stone\" id=\"results-count\">Showing all products</p>\n          <div class=\"flex items-center gap-3\">\n            <button id=\"mobile-filter-toggle\" class=\"lg:hidden inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.1em] font-medium border border-ink/15 px-4 py-2\">\n              <i data-lucide=\"sliders-horizontal\" class=\"w-4 h-4\" style=\"stroke-width:1.5\"></i> Filters\n            </button>\n            <select id=\"sort-select\" class=\"text-sm border border-ink/15 px-3 py-2 bg-cream focus:border-gold\">\n              <option value=\"featured\">Featured</option>\n              <option value=\"price-asc\">Price: Low to High</option>\n              <option value=\"price-desc\">Price: High to Low</option>\n              <option value=\"rating\">Highest Rated</option>\n            </select>\n          </div>\n        </div>\n\n        <!-- Mobile filters (collapsible) -->\n        <div id=\"mobile-filters\" class=\"lg:hidden hidden mb-6 p-5 bg-cream-dark space-y-5\">\n          <div>\n            <h3 class=\"text-[11px] uppercase tracking-[0.15em] font-bold text-ink mb-3\">Category</h3>\n            <div class=\"flex flex-wrap gap-3\" id=\"filter-gender-mobile\">\n              <label class=\"flex items-center gap-2 text-sm\"><input type=\"checkbox\" value=\"men\" class=\"gender-filter-m accent-ink w-4 h-4\" /> Men</label>\n              <label class=\"flex items-center gap-2 text-sm\"><input type=\"checkbox\" value=\"women\" class=\"gender-filter-m accent-ink w-4 h-4\" /> Women</label>\n              <label class=\"flex items-center gap-2 text-sm\"><input type=\"checkbox\" value=\"kids\" class=\"gender-filter-m accent-ink w-4 h-4\" /> Kids</label>\n            </div>\n          </div>\n          <div>\n            <h3 class=\"text-[11px] uppercase tracking-[0.15em] font-bold text-ink mb-3\">Status</h3>\n            <div class=\"flex flex-wrap gap-3\" id=\"filter-badge-mobile\">\n              <label class=\"flex items-center gap-2 text-sm\"><input type=\"checkbox\" value=\"new\" class=\"badge-filter-m accent-ink w-4 h-4\" /> New</label>\n              <label class=\"flex items-center gap-2 text-sm\"><input type=\"checkbox\" value=\"bestseller\" class=\"badge-filter-m accent-ink w-4 h-4\" /> Best Sellers</label>\n              <label class=\"flex items-center gap-2 text-sm\"><input type=\"checkbox\" value=\"sale\" class=\"badge-filter-m accent-ink w-4 h-4\" /> Sale</label>\n            </div>\n          </div>\n        </div>\n\n        <div class=\"grid grid-cols-2 md:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-8 lg:gap-y-12\" id=\"grid-shop\"></div>\n      </div>\n    </div>\n  </div>\n</div>",
+    init: function(params) {
+let state = {
+    genders: params.get("gender") ? [params.get("gender")] : [],
+    badges: params.get("filter") ? [params.get("filter")] : [],
+    price: "all",
+    sort: "featured",
+    q: params.get("q") || "",
+  };
+
+  function syncCheckboxes() {
+    document.querySelectorAll(".gender-filter, .gender-filter-m").forEach(cb => cb.checked = state.genders.includes(cb.value));
+    document.querySelectorAll(".badge-filter, .badge-filter-m").forEach(cb => cb.checked = state.badges.includes(cb.value));
+  }
+
+  function titleForState() {
+    if (state.q) return `Search: "${state.q}"`;
+    if (state.genders.length === 1) return state.genders[0][0].toUpperCase() + state.genders[0].slice(1);
+    if (state.badges.includes("new")) return "New Arrivals";
+    if (state.badges.includes("sale")) return "Sale";
+    if (state.badges.includes("bestseller")) return "Best Sellers";
+    return "Shop All";
+  }
+
+  function applyFilters() {
+    let items = [...PRODUCTS];
+
+    if (state.q) {
+      const q = state.q.toLowerCase();
+      items = items.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || p.fabric.toLowerCase().includes(q));
+    }
+    if (state.genders.length) items = items.filter(p => state.genders.includes(p.gender));
+    if (state.badges.length) items = items.filter(p => state.badges.includes(p.badge));
+    if (state.price !== "all") {
+      const [min, max] = state.price.split("-").map(Number);
+      items = items.filter(p => p.price >= min && p.price <= max);
+    }
+    if (state.sort === "price-asc") items.sort((a, b) => a.price - b.price);
+    if (state.sort === "price-desc") items.sort((a, b) => b.price - a.price);
+    if (state.sort === "rating") items.sort((a, b) => b.rating - a.rating);
+
+    document.getElementById("shop-title").textContent = titleForState();
+    document.getElementById("breadcrumb-label").textContent = titleForState();
+    document.getElementById("results-count").textContent = `Showing ${items.length} product${items.length !== 1 ? "s" : ""}`;
+    renderProductGrid("grid-shop", items);
+  }
+
+  document.querySelectorAll(".gender-filter, .gender-filter-m").forEach(cb => {
+    cb.addEventListener("change", () => {
+      const checked = [...document.querySelectorAll(".gender-filter:checked, .gender-filter-m:checked")].map(c => c.value);
+      state.genders = [...new Set(checked)];
+      syncCheckboxes();
+      applyFilters();
+    });
+  });
+  document.querySelectorAll(".badge-filter, .badge-filter-m").forEach(cb => {
+    cb.addEventListener("change", () => {
+      const checked = [...document.querySelectorAll(".badge-filter:checked, .badge-filter-m:checked")].map(c => c.value);
+      state.badges = [...new Set(checked)];
+      syncCheckboxes();
+      applyFilters();
+    });
+  });
+  document.querySelectorAll('input[name="price"]').forEach(r => {
+    r.addEventListener("change", () => { state.price = r.value; applyFilters(); });
+  });
+  document.getElementById("sort-select").addEventListener("change", (e) => {
+    state.sort = e.target.value;
+    applyFilters();
+  });
+  document.getElementById("clear-filters").addEventListener("click", () => {
+    state = { genders: [], badges: [], price: "all", sort: "featured", q: "" };
+    document.querySelectorAll('input[name="price"]').forEach(r => r.checked = r.value === "all");
+    document.getElementById("sort-select").value = "featured";
+    syncCheckboxes();
+    applyFilters();
+  });
+  document.getElementById("mobile-filter-toggle").addEventListener("click", () => {
+    document.getElementById("mobile-filters").classList.toggle("hidden");
+  });
+
+  syncCheckboxes();
+  applyFilters();
+    }
+  },
+  "product": {
+    title: "Product \u2014 Zarif &amp; Co.",
+    body: "<div>\n  <div id=\"product-root\" class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-14\">\n    <!-- filled by JS -->\n  </div>\n\n  <!-- You may also like -->\n  <section class=\"py-16 lg:py-20 w-full bg-cream-dark\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8\">\n      <h2 class=\"font-display text-2xl sm:text-3xl font-medium text-ink tracking-tight mb-8\">You May Also Like</h2>\n      <div class=\"grid grid-cols-2 md:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-8 lg:gap-y-12\" id=\"grid-related\"></div>\n    </div>\n  </section>\n</div>",
+    init: function(params) {
+const slug = params.get("slug");
+  const product = getProductBySlug(slug) || PRODUCTS[0];
+  document.title = product.name + " — Zarif & Co.";
+
+  let selectedSize = product.sizes[Math.floor(product.sizes.length / 2)];
+  let selectedColor = product.colors[0];
+  let qty = 1;
+  let activeImage = 0;
+
+  function priceBlockHTML() {
+    if (product.originalPrice) {
+      const pct = Math.round((1 - product.price / product.originalPrice) * 100);
+      return `
+        <span class="text-2xl font-semibold text-ink">${fmtPKR(product.price)}</span>
+        <span class="text-base text-stone line-through">${fmtPKR(product.originalPrice)}</span>
+        <span class="text-xs font-bold text-white bg-burgundy-deep px-2 py-1">-${pct}%</span>`;
+    }
+    return `<span class="text-2xl font-semibold text-ink">${fmtPKR(product.price)}</span>`;
+  }
+
+  function renderProduct() {
+    const root = document.getElementById("product-root");
+    root.innerHTML = `
+      <p class="text-[11px] uppercase tracking-[0.15em] text-stone mb-6">
+        <a href="#/" class="hover:text-gold">Home</a> /
+        <a href="#/shop?gender=${product.gender}" class="hover:text-gold">${product.category}</a> /
+        <span class="text-ink">${product.name}</span>
+      </p>
+
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-16">
+        <!-- Gallery -->
+        <div>
+          <div class="aspect-[4/5] overflow-hidden bg-stone/10 mb-3">
+            <img id="main-image" src="${product.images[activeImage]}" alt="${product.name}" class="w-full h-full object-cover object-top" />
+          </div>
+          <div class="grid grid-cols-3 gap-3" id="thumb-row">
+            ${product.images.map((img, i) => `
+              <button class="thumb-btn aspect-[4/5] overflow-hidden bg-stone/10 border-2 ${i === activeImage ? "border-gold" : "border-transparent"}" data-index="${i}">
+                <img src="${img}" alt="${product.name} thumbnail ${i + 1}" class="w-full h-full object-cover object-top" />
+              </button>`).join("")}
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div>
+          ${product.badge ? `<span class="inline-block px-2.5 py-1 text-[9px] uppercase tracking-[0.12em] font-bold text-white mb-4 ${badgeClasses(product.badge)}">${product.badge}</span>` : ""}
+          <h1 class="font-display text-3xl sm:text-4xl font-medium text-ink tracking-tight leading-tight">${product.name}</h1>
+          <div class="flex items-center gap-2 mt-3">
+            <div class="flex items-center gap-0.5">${starIcons(product.rating, 15)}</div>
+            <span class="text-sm text-stone">${product.rating} (${product.reviewCount} reviews)</span>
+          </div>
+          <div class="flex items-center gap-3 mt-5">${priceBlockHTML()}</div>
+          <p class="mt-5 text-[15px] text-ink/80 leading-relaxed">${product.description}</p>
+          <p class="mt-3 text-xs text-stone tracking-wide"><strong class="text-ink/70">Fabric:</strong> ${product.fabric}</p>
+
+          <div class="mt-7">
+            <h3 class="text-[11px] uppercase tracking-[0.12em] font-bold text-ink mb-3">Color: <span id="color-label" class="font-normal normal-case text-stone">${selectedColor}</span></h3>
+            <div class="flex gap-2.5" id="color-row">
+              ${product.colors.map(c => `<button class="swatch-btn text-[11px] px-3.5 py-2 border ${c === selectedColor ? "border-ink bg-ink text-cream" : "border-ink/20 text-ink hover:border-ink"}" data-color="${c}">${c}</button>`).join("")}
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-[11px] uppercase tracking-[0.12em] font-bold text-ink">Size: <span id="size-label" class="font-normal normal-case text-stone">${selectedSize}</span></h3>
+              <a href="#/size-guide" class="text-[11px] text-stone underline hover:text-gold">Size Guide</a>
+            </div>
+            <div class="flex flex-wrap gap-2.5" id="size-row">
+              ${product.sizes.map(s => `<button class="size-btn text-sm w-12 h-11 border ${s === selectedSize ? "active border-ink" : "border-ink/20 text-ink hover:border-ink"}" data-size="${s}">${s}</button>`).join("")}
+            </div>
+          </div>
+
+          <div class="mt-8 flex items-stretch gap-3">
+            <div class="flex items-center border border-ink/20">
+              <button id="qty-minus" class="w-11 h-12 flex items-center justify-center hover:bg-cream-dark text-lg">−</button>
+              <input id="qty-input" type="number" value="1" min="1" class="qty-input w-12 h-12 text-center border-x border-ink/20 focus:outline-none" />
+              <button id="qty-plus" class="w-11 h-12 flex items-center justify-center hover:bg-cream-dark text-lg">+</button>
+            </div>
+            <button id="add-to-cart-btn" class="flex-1 bg-ink text-cream text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-burgundy transition-colors duration-300 flex items-center justify-center gap-2">
+              <i data-lucide="shopping-bag" class="w-4 h-4" style="stroke-width:1.5"></i> Add to Cart
+            </button>
+            <button class="wishlist-btn w-12 h-12 border border-ink/20 flex items-center justify-center hover:text-burgundy hover:border-burgundy transition-colors" data-slug="${product.slug}" aria-label="Add to wishlist">
+              <i data-lucide="heart" class="w-[18px] h-[18px]" style="stroke-width:1.5"></i>
+            </button>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-ink/10 space-y-3 text-sm text-ink/70">
+            <p class="flex items-center gap-2.5"><i data-lucide="truck" class="w-4 h-4 text-gold" style="stroke-width:1.5"></i> Free shipping on orders above PKR 10,000</p>
+            <p class="flex items-center gap-2.5"><i data-lucide="rotate-ccw" class="w-4 h-4 text-gold" style="stroke-width:1.5"></i> Easy 14-day returns &amp; exchanges</p>
+            <p class="flex items-center gap-2.5"><i data-lucide="shield-check" class="w-4 h-4 text-gold" style="stroke-width:1.5"></i> 100% authentic, handcrafted quality</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.querySelectorAll(".thumb-btn").forEach(btn => btn.addEventListener("click", () => {
+      activeImage = Number(btn.dataset.index);
+      document.getElementById("main-image").src = product.images[activeImage];
+      document.querySelectorAll(".thumb-btn").forEach(b => b.classList.remove("border-gold"));
+      btn.classList.add("border-gold");
+    }));
+    document.querySelectorAll(".swatch-btn").forEach(btn => btn.addEventListener("click", () => {
+      selectedColor = btn.dataset.color;
+      document.getElementById("color-label").textContent = selectedColor;
+      document.querySelectorAll(".swatch-btn").forEach(b => b.className = "swatch-btn text-[11px] px-3.5 py-2 border border-ink/20 text-ink hover:border-ink");
+      btn.className = "swatch-btn text-[11px] px-3.5 py-2 border border-ink bg-ink text-cream";
+    }));
+    document.querySelectorAll(".size-btn").forEach(btn => btn.addEventListener("click", () => {
+      selectedSize = btn.dataset.size;
+      document.getElementById("size-label").textContent = selectedSize;
+      document.querySelectorAll(".size-btn").forEach(b => b.className = "size-btn text-sm w-12 h-11 border border-ink/20 text-ink hover:border-ink");
+      btn.classList.add("active", "border-ink");
+    }));
+    document.getElementById("qty-minus").addEventListener("click", () => {
+      qty = Math.max(1, qty - 1);
+      document.getElementById("qty-input").value = qty;
+    });
+    document.getElementById("qty-plus").addEventListener("click", () => {
+      qty += 1;
+      document.getElementById("qty-input").value = qty;
+    });
+    document.getElementById("qty-input").addEventListener("change", (e) => {
+      qty = Math.max(1, parseInt(e.target.value) || 1);
+      e.target.value = qty;
+    });
+    document.getElementById("add-to-cart-btn").addEventListener("click", () => {
+      addToCart(product, qty, selectedSize, selectedColor);
+      showToast(`${product.name} (${selectedSize}, ${selectedColor}) ×${qty} added to cart`);
+    });
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  renderProduct();
+  renderProductGrid("grid-related", getRelated(product));
+    }
+  },
+  "cart": {
+    title: "Shopping Cart \u2014 Zarif &amp; Co.",
+    body: "<div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16\">\n  <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\"><a href=\"#/\" class=\"hover:text-gold\">Home</a> / <span class=\"text-ink\">Shopping Cart</span></p>\n  <h1 class=\"font-display text-3xl sm:text-4xl font-medium text-ink tracking-tight mb-8 lg:mb-12\">Shopping Cart</h1>\n\n  <div id=\"cart-content\"></div>\n</div>",
+    init: function(params) {
+function cartRowHTML(item, index) {
+    return `
+    <div class="flex gap-4 sm:gap-6 py-6 border-b border-ink/10" data-index="${index}">
+      <a href="#/product?slug=${item.slug}" class="w-20 sm:w-28 aspect-[4/5] overflow-hidden bg-stone/10 shrink-0">
+        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover object-top" />
+      </a>
+      <div class="flex-1 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+        <div class="flex-1">
+          <a href="#/product?slug=${item.slug}" class="font-medium text-ink hover:text-gold transition-colors text-sm sm:text-base">${item.name}</a>
+          <p class="text-xs text-stone mt-1">Size: ${item.size} &nbsp;•&nbsp; Color: ${item.color}</p>
+          <button class="remove-item-btn mt-2 text-[11px] text-burgundy hover:underline sm:hidden" data-index="${index}">Remove</button>
+        </div>
+        <div class="flex items-center border border-ink/20 w-max">
+          <button class="qty-minus-btn w-9 h-9 flex items-center justify-center hover:bg-cream-dark" data-index="${index}">−</button>
+          <input type="number" min="1" value="${item.qty}" class="qty-input-cart w-10 h-9 text-center border-x border-ink/20 focus:outline-none text-sm" data-index="${index}" />
+          <button class="qty-plus-btn w-9 h-9 flex items-center justify-center hover:bg-cream-dark" data-index="${index}">+</button>
+        </div>
+        <div class="text-right sm:w-28">
+          <p class="font-semibold text-ink text-sm sm:text-base">${fmtPKR(item.qty * item.price)}</p>
+          <button class="remove-item-btn hidden sm:inline-block mt-1 text-[11px] text-burgundy hover:underline" data-index="${index}">Remove</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function emptyCartHTML() {
+    return `
+    <div class="text-center py-20">
+      <i data-lucide="shopping-bag" class="w-14 h-14 mx-auto text-stone-light mb-5" style="stroke-width:1"></i>
+      <h2 class="font-display text-2xl text-ink mb-2">Your cart is empty</h2>
+      <p class="text-sm text-stone mb-8">Looks like you haven't added anything yet. Let's find you something beautiful.</p>
+      <a href="#/shop" class="inline-flex items-center bg-ink text-cream px-8 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-burgundy transition-colors duration-300">Continue Shopping</a>
+    </div>`;
+  }
+
+  function renderCartPage() {
+    const cart = getCart();
+    const root = document.getElementById("cart-content");
+    if (!cart.length) {
+      root.innerHTML = emptyCartHTML();
+      if (window.lucide) lucide.createIcons();
+      return;
+    }
+    const subtotal = getCartSubtotal();
+    const shipping = subtotal >= 10000 ? 0 : 350;
+    const total = subtotal + shipping;
+
+    root.innerHTML = `
+      <div class="grid lg:grid-cols-3 gap-10 lg:gap-14 items-start">
+        <div class="lg:col-span-2">
+          <div class="hidden sm:flex text-[11px] uppercase tracking-[0.12em] text-stone pb-4 border-b border-ink/10">
+            <span class="w-20 sm:w-28 mr-4 sm:mr-6">Item</span>
+            <span class="flex-1"></span>
+            <span class="w-[104px] text-center">Quantity</span>
+            <span class="w-28 text-right">Total</span>
+          </div>
+          <div id="cart-rows">${cart.map(cartRowHTML).join("")}</div>
+          <a href="#/shop" class="inline-flex items-center gap-2 mt-6 text-[11px] uppercase tracking-[0.1em] text-ink border-b border-ink/20 pb-0.5 hover:border-gold hover:text-gold transition-colors duration-300 font-medium">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Continue Shopping
+          </a>
+        </div>
+
+        <div class="bg-cream-dark p-6 lg:p-8 lg:sticky lg:top-24">
+          <h2 class="font-display text-xl font-medium text-ink mb-6">Order Summary</h2>
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between text-ink/70"><span>Subtotal</span><span class="text-ink font-medium">${fmtPKR(subtotal)}</span></div>
+            <div class="flex justify-between text-ink/70"><span>Shipping</span><span class="text-ink font-medium">${shipping === 0 ? "Free" : fmtPKR(shipping)}</span></div>
+            ${shipping > 0 ? `<p class="text-[11px] text-stone">Add ${fmtPKR(10000 - subtotal)} more for free shipping</p>` : ""}
+          </div>
+          <div class="mt-5 pt-5 border-t border-ink/10 flex justify-between items-baseline">
+            <span class="text-sm font-medium text-ink">Total</span>
+            <span class="text-xl font-semibold text-ink">${fmtPKR(total)}</span>
+          </div>
+          <a href="#/checkout" class="mt-6 w-full inline-flex items-center justify-center bg-ink text-cream px-7 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-burgundy transition-colors duration-300">Proceed to Checkout</a>
+          <div class="mt-4 flex items-center justify-center gap-2 text-[11px] text-stone">
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i> Secure checkout
+          </div>
+        </div>
+      </div>`;
+
+    document.querySelectorAll(".qty-minus-btn").forEach(b => b.addEventListener("click", () => {
+      const i = Number(b.dataset.index);
+      const cart = getCart();
+      updateCartQty(i, cart[i].qty - 1);
+      renderCartPage();
+    }));
+    document.querySelectorAll(".qty-plus-btn").forEach(b => b.addEventListener("click", () => {
+      const i = Number(b.dataset.index);
+      const cart = getCart();
+      updateCartQty(i, cart[i].qty + 1);
+      renderCartPage();
+    }));
+    document.querySelectorAll(".qty-input-cart").forEach(inp => inp.addEventListener("change", () => {
+      const i = Number(inp.dataset.index);
+      updateCartQty(i, parseInt(inp.value) || 1);
+      renderCartPage();
+    }));
+    document.querySelectorAll(".remove-item-btn").forEach(b => b.addEventListener("click", () => {
+      removeFromCart(Number(b.dataset.index));
+      renderCartPage();
+    }));
+    if (window.lucide) lucide.createIcons();
+  }
+
+  renderCartPage();
+    }
+  },
+  "checkout": {
+    title: "Checkout \u2014 Zarif &amp; Co.",
+    body: "<div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16\">\n  <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\">\n    <a href=\"#/\" class=\"hover:text-gold\">Home</a> / <a href=\"#/cart\" class=\"hover:text-gold\">Cart</a> / <span class=\"text-ink\">Checkout</span>\n  </p>\n  <h1 class=\"font-display text-3xl sm:text-4xl font-medium text-ink tracking-tight mb-8 lg:mb-12\">Checkout</h1>\n\n  <div id=\"checkout-content\"></div>\n</div>",
+    init: function(params) {
+let paymentMethod = "cod";
+
+  function orderSummaryRowsHTML(cart) {
+    return cart.map(item => `
+      <div class="flex gap-3 py-3 border-b border-ink/10">
+        <div class="relative w-14 h-16 shrink-0 overflow-hidden bg-stone/10">
+          <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover object-top" />
+          <span class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-ink text-cream text-[10px] flex items-center justify-center font-bold">${item.qty}</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm text-ink font-medium truncate">${item.name}</p>
+          <p class="text-[11px] text-stone">${item.size} • ${item.color}</p>
+        </div>
+        <p class="text-sm text-ink font-medium whitespace-nowrap">${fmtPKR(item.qty * item.price)}</p>
+      </div>`).join("");
+  }
+
+  function renderCheckoutForm() {
+    const cart = getCart();
+    const root = document.getElementById("checkout-content");
+
+    if (!cart.length) {
+      root.innerHTML = `
+        <div class="text-center py-20">
+          <i data-lucide="shopping-bag" class="w-14 h-14 mx-auto text-stone-light mb-5" style="stroke-width:1"></i>
+          <h2 class="font-display text-2xl text-ink mb-2">Your cart is empty</h2>
+          <p class="text-sm text-stone mb-8">Add something to your cart before checking out.</p>
+          <a href="#/shop" class="inline-flex items-center bg-ink text-cream px-8 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-burgundy transition-colors duration-300">Continue Shopping</a>
+        </div>`;
+      if (window.lucide) lucide.createIcons();
+      return;
+    }
+
+    const subtotal = getCartSubtotal();
+    const shipping = subtotal >= 10000 ? 0 : 350;
+    const total = subtotal + shipping;
+
+    root.innerHTML = `
+      <form id="checkout-form" class="grid lg:grid-cols-3 gap-10 lg:gap-14 items-start">
+        <div class="lg:col-span-2 space-y-10">
+          <section>
+            <h2 class="font-display text-xl font-medium text-ink mb-5">Contact Information</h2>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <input required type="text" placeholder="Full Name" class="input-field sm:col-span-2" name="fullName" />
+              <input required type="email" placeholder="Email Address" class="input-field" name="email" />
+              <input required type="tel" placeholder="Phone Number" class="input-field" name="phone" />
+            </div>
+          </section>
+
+          <section>
+            <h2 class="font-display text-xl font-medium text-ink mb-5">Shipping Address</h2>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <input required type="text" placeholder="Street Address" class="input-field sm:col-span-2" name="address" />
+              <input required type="text" placeholder="City" class="input-field" name="city" />
+              <select required class="input-field" name="province">
+                <option value="">Select Province</option>
+                <option>Punjab</option><option>Sindh</option><option>Khyber Pakhtunkhwa</option>
+                <option>Balochistan</option><option>Islamabad Capital Territory</option><option>Gilgit-Baltistan</option>
+              </select>
+              <input required type="text" placeholder="Postal Code" class="input-field sm:col-span-2" name="postal" />
+            </div>
+          </section>
+
+          <section>
+            <h2 class="font-display text-xl font-medium text-ink mb-5">Payment Method</h2>
+            <div class="grid sm:grid-cols-3 gap-3">
+              <button type="button" data-method="cod" class="pay-option active border border-ink/20 px-4 py-4 text-left transition-colors">
+                <i data-lucide="banknote" class="w-5 h-5 mb-2" style="stroke-width:1.5"></i>
+                <p class="text-sm font-medium">Cash on Delivery</p>
+              </button>
+              <button type="button" data-method="card" class="pay-option border border-ink/20 px-4 py-4 text-left transition-colors">
+                <i data-lucide="credit-card" class="w-5 h-5 mb-2" style="stroke-width:1.5"></i>
+                <p class="text-sm font-medium">Debit / Credit Card</p>
+              </button>
+              <button type="button" data-method="wallet" class="pay-option border border-ink/20 px-4 py-4 text-left transition-colors">
+                <i data-lucide="smartphone" class="w-5 h-5 mb-2" style="stroke-width:1.5"></i>
+                <p class="text-sm font-medium">JazzCash / EasyPaisa</p>
+              </button>
+            </div>
+            <div id="card-fields" class="hidden grid sm:grid-cols-2 gap-4 mt-4">
+              <input type="text" placeholder="Card Number" class="input-field sm:col-span-2" />
+              <input type="text" placeholder="MM / YY" class="input-field" />
+              <input type="text" placeholder="CVC" class="input-field" />
+            </div>
+            <p id="wallet-note" class="hidden text-xs text-stone mt-4">You'll receive a payment request on your registered mobile number after placing the order.</p>
+          </section>
+        </div>
+
+        <div class="bg-cream-dark p-6 lg:p-8 lg:sticky lg:top-24">
+          <h2 class="font-display text-xl font-medium text-ink mb-5">Order Summary</h2>
+          <div class="max-h-72 overflow-y-auto pr-1">${orderSummaryRowsHTML(cart)}</div>
+          <div class="mt-5 space-y-2.5 text-sm">
+            <div class="flex justify-between text-ink/70"><span>Subtotal</span><span class="text-ink font-medium">${fmtPKR(subtotal)}</span></div>
+            <div class="flex justify-between text-ink/70"><span>Shipping</span><span class="text-ink font-medium">${shipping === 0 ? "Free" : fmtPKR(shipping)}</span></div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-ink/10 flex justify-between items-baseline">
+            <span class="text-sm font-medium text-ink">Total</span>
+            <span class="text-xl font-semibold text-ink">${fmtPKR(total)}</span>
+          </div>
+          <button type="submit" class="mt-6 w-full inline-flex items-center justify-center gap-2 bg-ink text-cream px-7 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-burgundy transition-colors duration-300">
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i> Place Order
+          </button>
+          <p class="mt-4 text-[11px] text-stone leading-relaxed">By placing your order, you agree to our <a href="#/terms-of-service" class="underline hover:text-gold">Terms of Service</a> and <a href="#/privacy-policy" class="underline hover:text-gold">Privacy Policy</a>.</p>
+        </div>
+      </form>`;
+
+    document.querySelectorAll(".pay-option").forEach(btn => {
+      btn.addEventListener("click", () => {
+        paymentMethod = btn.dataset.method;
+        document.querySelectorAll(".pay-option").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("card-fields").classList.toggle("hidden", paymentMethod !== "card");
+        document.getElementById("wallet-note").classList.toggle("hidden", paymentMethod !== "wallet");
+      });
+    });
+
+    document.getElementById("checkout-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const orderId = "ZC" + Math.floor(100000 + Math.random() * 900000);
+      const name = e.target.fullName.value;
+      sessionStorage.setItem("zarif_last_order", JSON.stringify({ orderId, name, total, paymentMethod, itemCount: cart.reduce((s,i)=>s+i.qty,0) }));
+      clearCart();
+      renderConfirmation(orderId, name, total, paymentMethod);
+    });
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function renderConfirmation(orderId, name, total, paymentMethod) {
+    const root = document.getElementById("checkout-content");
+    const methodLabel = { cod: "Cash on Delivery", card: "Debit / Credit Card", wallet: "JazzCash / EasyPaisa" }[paymentMethod];
+    root.innerHTML = `
+      <div class="max-w-xl mx-auto text-center py-12 lg:py-16">
+        <div class="w-16 h-16 rounded-full bg-ink flex items-center justify-center mx-auto mb-6">
+          <i data-lucide="check" class="w-8 h-8 text-cream" style="stroke-width:2"></i>
+        </div>
+        <h2 class="font-display text-3xl text-ink mb-3">Thank you${name ? ", " + name.split(" ")[0] : ""}!</h2>
+        <p class="text-stone mb-1">Your order has been placed successfully.</p>
+        <p class="text-sm text-ink/70 mb-8">Order <strong class="text-ink">#${orderId}</strong> • Paying via ${methodLabel}</p>
+        <div class="bg-cream-dark p-6 text-left mb-8">
+          <p class="text-sm text-ink/70">A confirmation email with your order details and tracking information will be sent to you shortly. Estimated delivery: <strong class="text-ink">3–5 business days.</strong></p>
+        </div>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="#/" class="inline-flex items-center bg-ink text-cream px-7 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-burgundy transition-colors duration-300">Back to Home</a>
+          <a href="#/shop" class="inline-flex items-center border border-ink/20 text-ink px-7 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:border-gold hover:text-gold transition-colors duration-300">Continue Shopping</a>
+        </div>
+      </div>`;
+    if (window.lucide) lucide.createIcons();
+  }
+
+  renderCheckoutForm();
+    }
+  },
+  "about": {
+    title: "About Us \u2014 Zarif &amp; Co.",
+    body: "<div>\n  <section class=\"relative w-full h-[45vh] lg:h-[55vh] overflow-hidden bg-ink\">\n    <img src=\"https://images.pexels.com/photos/16777502/pexels-photo-16777502.jpeg?auto=compress&cs=tinysrgb&w=1600\" alt=\"Zarif & Co. craftsmanship\" class=\"w-full h-full object-cover opacity-70\" />\n    <div class=\"absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-ink/40 flex items-end\">\n      <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 lg:pb-16 w-full\">\n        <span class=\"text-[11px] tracking-[0.25em] uppercase text-gold font-medium\">Our Story</span>\n        <h1 class=\"font-display text-4xl sm:text-5xl lg:text-6xl text-cream font-medium tracking-tight mt-3\">About Zarif &amp; Co.</h1>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"py-16 lg:py-24\">\n    <div class=\"mx-auto max-w-3xl px-4 sm:px-6 lg:px-8\">\n      <p class=\"text-[11px] uppercase tracking-[0.2em] text-gold font-semibold mb-4\">Since 2012</p>\n      <h2 class=\"font-display text-2xl sm:text-3xl text-ink tracking-tight leading-snug mb-6\">Where tradition meets the modern wardrobe.</h2>\n      <div class=\"space-y-5 text-[15px] text-ink/80 leading-relaxed\">\n        <p>Zarif &amp; Co. was founded in Lahore with a simple belief: that Pakistani craftsmanship deserves a global stage. What began as a small atelier working with local artisans has grown into a house recognized for its embroidery, tailoring, and commitment to quality \u2014 without ever losing sight of where it started.</p>\n        <p>Every piece we make begins with fabric sourced from trusted mills across Punjab and Sindh, and passes through the hands of embroiderers, tailors, and finishers who have spent decades perfecting their craft. We believe luxury isn't about excess \u2014 it's about intention, in every stitch and seam.</p>\n        <p>Today, we serve customers across Pakistan and abroad, but our process hasn't changed. Each garment is still cut, embroidered, and finished by hand in our Lahore workshop.</p>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"py-16 lg:py-20 bg-cream-dark\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8\">\n      <div class=\"grid sm:grid-cols-3 gap-8 lg:gap-12 text-center\">\n        <div>\n          <p class=\"font-display text-4xl text-ink mb-2\">12+</p>\n          <p class=\"text-sm text-stone tracking-wide\">Years of Craftsmanship</p>\n        </div>\n        <div>\n          <p class=\"font-display text-4xl text-ink mb-2\">40,000+</p>\n          <p class=\"text-sm text-stone tracking-wide\">Happy Customers</p>\n        </div>\n        <div>\n          <p class=\"font-display text-4xl text-ink mb-2\">100%</p>\n          <p class=\"text-sm text-stone tracking-wide\">Handcrafted in Pakistan</p>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"py-16 lg:py-24\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8\">\n      <div class=\"grid lg:grid-cols-3 gap-6 lg:gap-8\">\n        <div class=\"p-8 bg-cream-dark\">\n          <i data-lucide=\"hand-heart\" class=\"w-7 h-7 text-gold mb-4\" style=\"stroke-width:1.5\"></i>\n          <h3 class=\"font-display text-xl text-ink mb-2\">Handcrafted Quality</h3>\n          <p class=\"text-sm text-ink/70 leading-relaxed\">Every piece is cut, embroidered, and finished by skilled artisans \u2014 never mass-produced.</p>\n        </div>\n        <div class=\"p-8 bg-cream-dark\">\n          <i data-lucide=\"leaf\" class=\"w-7 h-7 text-gold mb-4\" style=\"stroke-width:1.5\"></i>\n          <h3 class=\"font-display text-xl text-ink mb-2\">Responsibly Sourced</h3>\n          <p class=\"text-sm text-ink/70 leading-relaxed\">We partner with local mills and fair-wage workshops across Punjab and Sindh.</p>\n        </div>\n        <div class=\"p-8 bg-cream-dark\">\n          <i data-lucide=\"globe\" class=\"w-7 h-7 text-gold mb-4\" style=\"stroke-width:1.5\"></i>\n          <h3 class=\"font-display text-xl text-ink mb-2\">Worldwide Shipping</h3>\n          <p class=\"text-sm text-ink/70 leading-relaxed\">From Lahore to your doorstep, wherever you are \u2014 carefully packaged and tracked.</p>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"w-full bg-burgundy-deep py-16 lg:py-20\">\n    <div class=\"mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center\">\n      <h2 class=\"font-display text-3xl text-cream tracking-tight mb-4\">Visit Our Flagship Store</h2>\n      <p class=\"text-cream/70 mb-8\">Gulberg III, Lahore, Pakistan \u2014 open daily 11am to 9pm</p>\n      <a href=\"#/contact\" class=\"inline-flex items-center bg-gold text-ink px-8 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-cream transition-colors duration-300\">Get Directions</a>\n    </div>\n  </section>\n</div>",
+    init: null
+  },
+  "contact": {
+    title: "Contact Us \u2014 Zarif &amp; Co.",
+    body: "<div>\n  <div class=\"bg-cream-dark border-b border-ink/5\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12\">\n      <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\"><a href=\"#/\" class=\"hover:text-gold\">Home</a> / <span class=\"text-ink\">Contact</span></p>\n      <h1 class=\"font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-ink tracking-tight\">Get in Touch</h1>\n      <p class=\"mt-2 text-sm text-stone\">We'd love to hear from you. Reach out with any questions about orders, sizing, or custom work.</p>\n    </div>\n  </div>\n\n  <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-20\">\n    <div class=\"grid lg:grid-cols-5 gap-10 lg:gap-16\">\n      <div class=\"lg:col-span-3\">\n        <div id=\"contact-form-wrap\">\n          <h2 class=\"font-display text-2xl text-ink mb-6\">Send Us a Message</h2>\n          <form id=\"contact-form\" class=\"space-y-4\">\n            <div class=\"grid sm:grid-cols-2 gap-4\">\n              <input required type=\"text\" placeholder=\"Your Name\" class=\"input-field\" name=\"name\" />\n              <input required type=\"email\" placeholder=\"Email Address\" class=\"input-field\" name=\"email\" />\n            </div>\n            <input type=\"text\" placeholder=\"Subject\" class=\"input-field\" name=\"subject\" />\n            <textarea required rows=\"6\" placeholder=\"Your message...\" class=\"input-field resize-none\" name=\"message\"></textarea>\n            <button type=\"submit\" class=\"inline-flex items-center gap-2 bg-ink text-cream px-8 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-burgundy transition-colors duration-300\">\n              <i data-lucide=\"send\" class=\"w-4 h-4\" style=\"stroke-width:1.5\"></i> Send Message\n            </button>\n          </form>\n        </div>\n      </div>\n\n      <div class=\"lg:col-span-2 space-y-6\">\n        <div class=\"p-6 bg-cream-dark flex gap-4\">\n          <i data-lucide=\"map-pin\" class=\"w-5 h-5 text-gold shrink-0 mt-0.5\" style=\"stroke-width:1.5\"></i>\n          <div>\n            <h3 class=\"text-sm font-semibold text-ink mb-1\">Flagship Store</h3>\n            <p class=\"text-sm text-ink/70\">Block C, Gulberg III, Lahore, Punjab, Pakistan</p>\n          </div>\n        </div>\n        <div class=\"p-6 bg-cream-dark flex gap-4\">\n          <i data-lucide=\"phone\" class=\"w-5 h-5 text-gold shrink-0 mt-0.5\" style=\"stroke-width:1.5\"></i>\n          <div>\n            <h3 class=\"text-sm font-semibold text-ink mb-1\">Phone / WhatsApp</h3>\n            <p class=\"text-sm text-ink/70\">+92 300 1234567</p>\n          </div>\n        </div>\n        <div class=\"p-6 bg-cream-dark flex gap-4\">\n          <i data-lucide=\"mail\" class=\"w-5 h-5 text-gold shrink-0 mt-0.5\" style=\"stroke-width:1.5\"></i>\n          <div>\n            <h3 class=\"text-sm font-semibold text-ink mb-1\">Email</h3>\n            <p class=\"text-sm text-ink/70\">hello@zarifandco.pk</p>\n          </div>\n        </div>\n        <div class=\"p-6 bg-cream-dark flex gap-4\">\n          <i data-lucide=\"clock\" class=\"w-5 h-5 text-gold shrink-0 mt-0.5\" style=\"stroke-width:1.5\"></i>\n          <div>\n            <h3 class=\"text-sm font-semibold text-ink mb-1\">Store Hours</h3>\n            <p class=\"text-sm text-ink/70\">Daily, 11:00 AM \u2013 9:00 PM</p>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>",
+    init: function(params) {
+document.getElementById("contact-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    document.getElementById("contact-form-wrap").innerHTML = `
+      <div class="py-10 text-center bg-cream-dark px-6">
+        <div class="w-14 h-14 rounded-full bg-ink flex items-center justify-center mx-auto mb-5">
+          <i data-lucide="check" class="w-7 h-7 text-cream" style="stroke-width:2"></i>
+        </div>
+        <h2 class="font-display text-2xl text-ink mb-2">Thank you, ${name.split(" ")[0]}!</h2>
+        <p class="text-sm text-stone">Your message has been received. Our team will get back to you within 24 hours.</p>
+      </div>`;
+    if (window.lucide) lucide.createIcons();
+  });
+    }
+  },
+  "wishlist": {
+    title: "Wishlist \u2014 Zarif &amp; Co.",
+    body: "<div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 lg:py-16\">\n  <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\"><a href=\"#/\" class=\"hover:text-gold\">Home</a> / <span class=\"text-ink\">Wishlist</span></p>\n  <h1 class=\"font-display text-3xl sm:text-4xl font-medium text-ink tracking-tight mb-8 lg:mb-12\">Your Wishlist</h1>\n\n  <div id=\"wishlist-empty\" class=\"hidden text-center py-20\">\n    <i data-lucide=\"heart\" class=\"w-14 h-14 mx-auto text-stone-light mb-5\" style=\"stroke-width:1\"></i>\n    <h2 class=\"font-display text-2xl text-ink mb-2\">Your wishlist is empty</h2>\n    <p class=\"text-sm text-stone mb-8\">Tap the heart icon on any product to save it here for later.</p>\n    <a href=\"#/shop\" class=\"inline-flex items-center bg-ink text-cream px-8 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-burgundy transition-colors duration-300\">Browse Products</a>\n  </div>\n\n  <div class=\"grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-8 lg:gap-y-12\" id=\"grid-wishlist\"></div>\n</div>",
+    init: function(params) {
+const saved = getWishlist();
+  const items = PRODUCTS.filter(p => saved.includes(p.slug));
+  document.getElementById("wishlist-empty").classList.toggle("hidden", items.length > 0);
+  renderProductGrid("grid-wishlist", items);
+    }
+  },
+  "account": {
+    title: "My Account \u2014 Zarif &amp; Co.",
+    body: "<div class=\"mx-auto max-w-md px-4 sm:px-6 py-16 lg:py-24\">\n  <div class=\"text-center mb-8\">\n    <h1 class=\"font-display text-3xl text-ink tracking-tight\">My Account</h1>\n    <p class=\"text-sm text-stone mt-2\">Sign in to view your orders and saved details</p>\n  </div>\n\n  <div class=\"flex border-b border-ink/10 mb-8\">\n    <button id=\"tab-login\" class=\"tab-btn active flex-1 pb-3 text-sm font-medium border-b-2 border-ink text-ink\">Sign In</button>\n    <button id=\"tab-signup\" class=\"tab-btn flex-1 pb-3 text-sm font-medium border-b-2 border-transparent text-stone\">Create Account</button>\n  </div>\n\n  <form id=\"login-form\" class=\"space-y-4\">\n    <input required type=\"email\" placeholder=\"Email Address\" class=\"input-field\" />\n    <input required type=\"password\" placeholder=\"Password\" class=\"input-field\" />\n    <div class=\"flex items-center justify-between text-xs\">\n      <label class=\"flex items-center gap-2 text-ink/70\"><input type=\"checkbox\" class=\"accent-ink\" /> Remember me</label>\n      <a href=\"#\" class=\"text-stone hover:text-gold underline\">Forgot password?</a>\n    </div>\n    <button type=\"submit\" class=\"w-full bg-ink text-cream px-7 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-burgundy transition-colors duration-300\">Sign In</button>\n  </form>\n\n  <form id=\"signup-form\" class=\"space-y-4 hidden\">\n    <input required type=\"text\" placeholder=\"Full Name\" class=\"input-field\" />\n    <input required type=\"email\" placeholder=\"Email Address\" class=\"input-field\" />\n    <input required type=\"password\" placeholder=\"Create Password\" class=\"input-field\" />\n    <button type=\"submit\" class=\"w-full bg-ink text-cream px-7 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-burgundy transition-colors duration-300\">Create Account</button>\n  </form>\n\n  <p id=\"account-note\" class=\"text-xs text-stone text-center mt-8 leading-relaxed\"></p>\n</div>",
+    init: function(params) {
+const tabLogin = document.getElementById("tab-login");
+  const tabSignup = document.getElementById("tab-signup");
+  const loginForm = document.getElementById("login-form");
+  const signupForm = document.getElementById("signup-form");
+  tabLogin.addEventListener("click", () => {
+    tabLogin.classList.add("active"); tabSignup.classList.remove("active");
+    loginForm.classList.remove("hidden"); signupForm.classList.add("hidden");
+  });
+  tabSignup.addEventListener("click", () => {
+    tabSignup.classList.add("active"); tabLogin.classList.remove("active");
+    signupForm.classList.remove("hidden"); loginForm.classList.add("hidden");
+  });
+  [loginForm, signupForm].forEach(f => f.addEventListener("submit", (e) => {
+    e.preventDefault();
+    document.getElementById("account-note").textContent = "This is a demo storefront — connect a backend (e.g. Firebase, Supabase, or your own API) to enable real customer accounts.";
+  }));
+    }
+  },
+  "shipping": {
+    title: "Shipping Information \u2014 Zarif &amp; Co.",
+    body: "<div>\n  <div class=\"bg-cream-dark border-b border-ink/5\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12\">\n      <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\"><a href=\"#/\" class=\"hover:text-gold\">Home</a> / <span class=\"text-ink\">Shipping</span></p>\n      <h1 class=\"font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-ink tracking-tight\">Shipping Information</h1>\n      <p class=\"mt-2 text-sm text-stone max-w-xl\">Everything you need to know about delivery times, rates, and tracking.</p>\n    </div>\n  </div>\n  <div class=\"mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 lg:py-20 space-y-10\">\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">Domestic Shipping (Pakistan)</h2>\n      <ul class=\"space-y-2 text-[15px] text-ink/80\">\n        <li>\u2022 Free shipping on all orders above PKR 10,000</li>\n        <li>\u2022 Standard delivery: 3\u20135 business days (PKR 350 flat rate below the free-shipping threshold)</li>\n        <li>\u2022 Express delivery: 1\u20132 business days in Lahore, Karachi &amp; Islamabad (PKR 800)</li>\n        <li>\u2022 Cash on Delivery available nationwide</li>\n      </ul>\n    </div>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">International Shipping</h2>\n      <p class=\"text-[15px] text-ink/80 leading-relaxed\">We ship worldwide via tracked courier (DHL / TCS International). Delivery typically takes 7\u201314 business days depending on destination. Customs duties and import taxes, if applicable, are the responsibility of the customer and are not included in the item price or shipping cost.</p>\n    </div>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">Order Tracking</h2>\n      <p class=\"text-[15px] text-ink/80 leading-relaxed\">Once your order ships, you'll receive a tracking number by email and SMS. You can also check your order status anytime on our <a href=\"#/track-order\" class=\"text-gold underline\">Track Order</a> page.</p>\n    </div>\n    <div class=\"p-6 bg-cream-dark\">\n      <p class=\"text-sm text-ink/70\"><strong class=\"text-ink\">Note:</strong> Delivery times may be extended during sale periods (Eid, wedding season) or due to courier delays outside our control.</p>\n    </div>\n  </div>\n</div>",
+    init: null
+  },
+  "returns": {
+    title: "Returns & Exchanges \u2014 Zarif &amp; Co.",
+    body: "<div>\n  <div class=\"bg-cream-dark border-b border-ink/5\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12\">\n      <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\"><a href=\"#/\" class=\"hover:text-gold\">Home</a> / <span class=\"text-ink\">Returns</span></p>\n      <h1 class=\"font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-ink tracking-tight\">Returns &amp; Exchanges</h1>\n      <p class=\"mt-2 text-sm text-stone max-w-xl\">Easy 14-day returns on all unworn, unwashed items with tags attached.</p>\n    </div>\n  </div>\n  <div class=\"mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 lg:py-20 space-y-10\">\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">Our Return Policy</h2>\n      <p class=\"text-[15px] text-ink/80 leading-relaxed\">We want you to love what you order. If something isn't right, you can return or exchange it within 14 days of delivery, provided the item is unworn, unwashed, and has all original tags attached. Custom-stitched and made-to-measure orders are final sale.</p>\n    </div>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">How to Start a Return</h2>\n      <ol class=\"space-y-2 text-[15px] text-ink/80 list-decimal list-inside\">\n        <li>Email hello@zarifandco.pk with your order number and reason for return.</li>\n        <li>We'll send you a prepaid return label (domestic orders) within 24 hours.</li>\n        <li>Pack the item securely with the original tags attached and hand it to the courier.</li>\n        <li>Once received and inspected, your refund or exchange is processed within 5\u20137 business days.</li>\n      </ol>\n    </div>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">Refunds</h2>\n      <p class=\"text-[15px] text-ink/80 leading-relaxed\">Refunds are issued to your original payment method. For Cash on Delivery orders, refunds are issued via bank transfer or store credit, whichever you prefer.</p>\n    </div>\n  </div>\n</div>",
+    init: null
+  },
+  "size-guide": {
+    title: "Size Guide \u2014 Zarif &amp; Co.",
+    body: "<div>\n  <div class=\"bg-cream-dark border-b border-ink/5\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12\">\n      <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\"><a href=\"#/\" class=\"hover:text-gold\">Home</a> / <span class=\"text-ink\">Size Guide</span></p>\n      <h1 class=\"font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-ink tracking-tight\">Size Guide</h1>\n      <p class=\"mt-2 text-sm text-stone max-w-xl\">Find your perfect fit across our men's, women's, and kids' collections.</p>\n    </div>\n  </div>\n  <div class=\"mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-14 lg:py-20 space-y-12\">\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-4\">Men's Sizing (inches)</h2>\n      <div class=\"overflow-x-auto\">\n        <table class=\"w-full text-sm text-left border-collapse\">\n          <thead><tr class=\"border-b border-ink/10 text-stone uppercase text-[11px] tracking-wide\">\n            <th class=\"py-3 pr-4\">Size</th><th class=\"py-3 pr-4\">Chest</th><th class=\"py-3 pr-4\">Waist</th><th class=\"py-3\">Length</th>\n          </tr></thead>\n          <tbody class=\"text-ink/80\">\n            <tr class=\"border-b border-ink/5\"><td class=\"py-3 pr-4 font-medium text-ink\">S</td><td class=\"py-3 pr-4\">38</td><td class=\"py-3 pr-4\">32</td><td class=\"py-3\">42</td></tr>\n            <tr class=\"border-b border-ink/5\"><td class=\"py-3 pr-4 font-medium text-ink\">M</td><td class=\"py-3 pr-4\">40</td><td class=\"py-3 pr-4\">34</td><td class=\"py-3\">43</td></tr>\n            <tr class=\"border-b border-ink/5\"><td class=\"py-3 pr-4 font-medium text-ink\">L</td><td class=\"py-3 pr-4\">42</td><td class=\"py-3 pr-4\">36</td><td class=\"py-3\">44</td></tr>\n            <tr class=\"border-b border-ink/5\"><td class=\"py-3 pr-4 font-medium text-ink\">XL</td><td class=\"py-3 pr-4\">44</td><td class=\"py-3 pr-4\">38</td><td class=\"py-3\">45</td></tr>\n            <tr><td class=\"py-3 pr-4 font-medium text-ink\">XXL</td><td class=\"py-3 pr-4\">46</td><td class=\"py-3 pr-4\">40</td><td class=\"py-3\">46</td></tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-4\">Women's Sizing (inches)</h2>\n      <div class=\"overflow-x-auto\">\n        <table class=\"w-full text-sm text-left border-collapse\">\n          <thead><tr class=\"border-b border-ink/10 text-stone uppercase text-[11px] tracking-wide\">\n            <th class=\"py-3 pr-4\">Size</th><th class=\"py-3 pr-4\">Bust</th><th class=\"py-3 pr-4\">Waist</th><th class=\"py-3\">Hip</th>\n          </tr></thead>\n          <tbody class=\"text-ink/80\">\n            <tr class=\"border-b border-ink/5\"><td class=\"py-3 pr-4 font-medium text-ink\">XS</td><td class=\"py-3 pr-4\">32</td><td class=\"py-3 pr-4\">26</td><td class=\"py-3\">34</td></tr>\n            <tr class=\"border-b border-ink/5\"><td class=\"py-3 pr-4 font-medium text-ink\">S</td><td class=\"py-3 pr-4\">34</td><td class=\"py-3 pr-4\">28</td><td class=\"py-3\">36</td></tr>\n            <tr class=\"border-b border-ink/5\"><td class=\"py-3 pr-4 font-medium text-ink\">M</td><td class=\"py-3 pr-4\">36</td><td class=\"py-3 pr-4\">30</td><td class=\"py-3\">38</td></tr>\n            <tr><td class=\"py-3 pr-4 font-medium text-ink\">L</td><td class=\"py-3 pr-4\">38</td><td class=\"py-3 pr-4\">32</td><td class=\"py-3\">40</td></tr>\n          </tbody>\n        </table>\n      </div>\n    </div>\n    <div class=\"p-6 bg-cream-dark\">\n      <p class=\"text-sm text-ink/70\"><strong class=\"text-ink\">Tip:</strong> For a relaxed fit, we recommend sizing up. For custom measurements or made-to-order stitching, contact us at hello@zarifandco.pk before placing your order.</p>\n    </div>\n  </div>\n</div>",
+    init: null
+  },
+  "faq": {
+    title: "FAQ \u2014 Zarif &amp; Co.",
+    body: "<div>\n  <div class=\"bg-cream-dark border-b border-ink/5\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12\">\n      <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\"><a href=\"#/\" class=\"hover:text-gold\">Home</a> / <span class=\"text-ink\">FAQ</span></p>\n      <h1 class=\"font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-ink tracking-tight\">Frequently Asked Questions</h1>\n      <p class=\"mt-2 text-sm text-stone max-w-xl\">Answers to our most common questions about orders, shipping, and returns.</p>\n    </div>\n  </div>\n  <div class=\"mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 lg:py-20\">\n    <div id=\"faq-list\">\n        <div class=\"border-b border-ink/10 py-5\">\n          <button class=\"faq-toggle w-full flex items-center justify-between text-left gap-4\">\n            <span class=\"font-medium text-ink text-[15px]\">How long will my order take to arrive?</span>\n            <i data-lucide=\"plus\" class=\"faq-icon w-4 h-4 text-stone shrink-0\" style=\"stroke-width:1.5\"></i>\n          </button>\n          <div class=\"faq-answer hidden mt-3 text-sm text-ink/70 leading-relaxed\">Domestic orders typically arrive within 3\u20135 business days. International orders take 7\u201314 business days depending on destination. See our <a href='#/shipping' class='text-gold underline'>Shipping page</a> for full details.</div>\n        </div>\n        <div class=\"border-b border-ink/10 py-5\">\n          <button class=\"faq-toggle w-full flex items-center justify-between text-left gap-4\">\n            <span class=\"font-medium text-ink text-[15px]\">Do you offer Cash on Delivery?</span>\n            <i data-lucide=\"plus\" class=\"faq-icon w-4 h-4 text-stone shrink-0\" style=\"stroke-width:1.5\"></i>\n          </button>\n          <div class=\"faq-answer hidden mt-3 text-sm text-ink/70 leading-relaxed\">Yes, Cash on Delivery is available for all domestic orders across Pakistan.</div>\n        </div>\n        <div class=\"border-b border-ink/10 py-5\">\n          <button class=\"faq-toggle w-full flex items-center justify-between text-left gap-4\">\n            <span class=\"font-medium text-ink text-[15px]\">Can I return or exchange an item?</span>\n            <i data-lucide=\"plus\" class=\"faq-icon w-4 h-4 text-stone shrink-0\" style=\"stroke-width:1.5\"></i>\n          </button>\n          <div class=\"faq-answer hidden mt-3 text-sm text-ink/70 leading-relaxed\">Yes, unworn and unwashed items with tags attached can be returned or exchanged within 14 days of delivery. Custom-stitched pieces are final sale. See our <a href='#/returns' class='text-gold underline'>Returns page</a>.</div>\n        </div>\n        <div class=\"border-b border-ink/10 py-5\">\n          <button class=\"faq-toggle w-full flex items-center justify-between text-left gap-4\">\n            <span class=\"font-medium text-ink text-[15px]\">Do you ship internationally?</span>\n            <i data-lucide=\"plus\" class=\"faq-icon w-4 h-4 text-stone shrink-0\" style=\"stroke-width:1.5\"></i>\n          </button>\n          <div class=\"faq-answer hidden mt-3 text-sm text-ink/70 leading-relaxed\">Yes, we ship worldwide via tracked courier. Import duties, if any, are the customer's responsibility.</div>\n        </div>\n        <div class=\"border-b border-ink/10 py-5\">\n          <button class=\"faq-toggle w-full flex items-center justify-between text-left gap-4\">\n            <span class=\"font-medium text-ink text-[15px]\">Can I get a custom size or made-to-measure order?</span>\n            <i data-lucide=\"plus\" class=\"faq-icon w-4 h-4 text-stone shrink-0\" style=\"stroke-width:1.5\"></i>\n          </button>\n          <div class=\"faq-answer hidden mt-3 text-sm text-ink/70 leading-relaxed\">Yes \u2014 email us your measurements at hello@zarifandco.pk before placing your order and we'll arrange it for a small additional fee.</div>\n        </div>\n        <div class=\"border-b border-ink/10 py-5\">\n          <button class=\"faq-toggle w-full flex items-center justify-between text-left gap-4\">\n            <span class=\"font-medium text-ink text-[15px]\">How do I track my order?</span>\n            <i data-lucide=\"plus\" class=\"faq-icon w-4 h-4 text-stone shrink-0\" style=\"stroke-width:1.5\"></i>\n          </button>\n          <div class=\"faq-answer hidden mt-3 text-sm text-ink/70 leading-relaxed\">You'll receive a tracking link by email and SMS once your order ships. You can also check status on our <a href='#/track-order' class='text-gold underline'>Track Order</a> page.</div>\n        </div>\n    </div>\n    <p class=\"mt-10 text-sm text-stone\">Still have questions? <a href=\"#/contact\" class=\"text-gold underline\">Contact our support team</a>.</p>\n  </div></div>",
+    init: function(params) {
+document.querySelectorAll(".faq-toggle").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const answer = btn.nextElementSibling;
+        const icon = btn.querySelector(".faq-icon");
+        answer.classList.toggle("hidden");
+        icon.setAttribute("data-lucide", answer.classList.contains("hidden") ? "plus" : "minus");
+        if (window.lucide) lucide.createIcons();
+      });
+    });
+    }
+  },
+  "privacy-policy": {
+    title: "Privacy Policy \u2014 Zarif &amp; Co.",
+    body: "<div>\n  <div class=\"bg-cream-dark border-b border-ink/5\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12\">\n      <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\"><a href=\"#/\" class=\"hover:text-gold\">Home</a> / <span class=\"text-ink\">Privacy Policy</span></p>\n      <h1 class=\"font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-ink tracking-tight\">Privacy Policy</h1>\n      <p class=\"mt-2 text-sm text-stone max-w-xl\">Last updated: January 2026</p>\n    </div>\n  </div>\n  <div class=\"mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 lg:py-20 space-y-8 text-[15px] text-ink/80 leading-relaxed\">\n    <p>Zarif &amp; Co. (\"we\", \"us\", \"our\") respects your privacy. This policy explains what information we collect, how we use it, and the choices you have.</p>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">Information We Collect</h2>\n      <p>When you place an order or create an account, we collect your name, email address, phone number, shipping address, and payment details (processed securely by our payment partners \u2014 we never store full card numbers). We also collect browsing data such as pages visited and items viewed to improve your shopping experience.</p>\n    </div>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">How We Use Your Information</h2>\n      <p>We use your information to process orders, communicate order and shipping updates, respond to customer service inquiries, and \u2014 with your consent \u2014 send marketing emails about new arrivals and offers. You can unsubscribe from marketing emails at any time.</p>\n    </div>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">Data Sharing</h2>\n      <p>We share order information with shipping couriers and payment processors solely to fulfill your order. We do not sell your personal information to third parties.</p>\n    </div>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">Your Rights</h2>\n      <p>You may request access to, correction of, or deletion of your personal data at any time by emailing hello@zarifandco.pk.</p>\n    </div>\n    <div class=\"p-6 bg-cream-dark\">\n      <p class=\"text-sm text-ink/70\">This is placeholder policy text for demonstration. Before going live, replace this page with a policy reviewed by a qualified legal professional, tailored to your actual data practices and applicable law.</p>\n    </div>\n  </div>\n</div>",
+    init: null
+  },
+  "terms-of-service": {
+    title: "Terms of Service \u2014 Zarif &amp; Co.",
+    body: "<div>\n  <div class=\"bg-cream-dark border-b border-ink/5\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12\">\n      <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\"><a href=\"#/\" class=\"hover:text-gold\">Home</a> / <span class=\"text-ink\">Terms of Service</span></p>\n      <h1 class=\"font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-ink tracking-tight\">Terms of Service</h1>\n      <p class=\"mt-2 text-sm text-stone max-w-xl\">Last updated: January 2026</p>\n    </div>\n  </div>\n  <div class=\"mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 lg:py-20 space-y-8 text-[15px] text-ink/80 leading-relaxed\">\n    <p>By accessing or placing an order on zarifandco.pk, you agree to the following terms.</p>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">Orders &amp; Payment</h2>\n      <p>All prices are listed in Pakistani Rupees (PKR) and are subject to change without notice. Orders are confirmed once payment is received (or, for Cash on Delivery, once the order is placed). We reserve the right to cancel any order due to stock unavailability, pricing errors, or suspected fraud.</p>\n    </div>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">Product Descriptions</h2>\n      <p>We make every effort to display colors and details accurately, but slight variations may occur due to screen settings and the handmade nature of embroidery and fabric dyeing.</p>\n    </div>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">Returns &amp; Refunds</h2>\n      <p>Please refer to our <a href=\"#/returns\" class=\"text-gold underline\">Returns &amp; Exchanges</a> page for full details on eligibility and process.</p>\n    </div>\n    <div>\n      <h2 class=\"font-display text-xl text-ink mb-3\">Intellectual Property</h2>\n      <p>All content on this site \u2014 including photography, designs, and text \u2014 is the property of Zarif &amp; Co. and may not be reproduced without written permission.</p>\n    </div>\n    <div class=\"p-6 bg-cream-dark\">\n      <p class=\"text-sm text-ink/70\">This is placeholder terms-of-service text for demonstration. Before going live, have these terms reviewed and finalized by a qualified legal professional.</p>\n    </div>\n  </div>\n</div>",
+    init: null
+  },
+  "track-order": {
+    title: "Track Order \u2014 Zarif &amp; Co.",
+    body: "<div>\n  <div class=\"bg-cream-dark border-b border-ink/5\">\n    <div class=\"mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-12\">\n      <p class=\"text-[11px] uppercase tracking-[0.15em] text-stone mb-2\"><a href=\"#/\" class=\"hover:text-gold\">Home</a> / <span class=\"text-ink\">Track Order</span></p>\n      <h1 class=\"font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-ink tracking-tight\">Track Your Order</h1>\n      <p class=\"mt-2 text-sm text-stone max-w-xl\">Enter your order number and email to check your delivery status.</p>\n    </div>\n  </div>\n  <div class=\"mx-auto max-w-md px-4 sm:px-6 lg:px-8 py-14 lg:py-20\">\n    <form id=\"track-form\" class=\"space-y-4\">\n      <input required type=\"text\" placeholder=\"Order Number (e.g. ZC123456)\" class=\"input-field\" style=\"width:100%; padding:0.75rem 1rem; background:#FAF8F5; border:1px solid rgba(26,26,26,0.12); font-size:0.875rem;\" />\n      <input required type=\"email\" placeholder=\"Email Address\" class=\"input-field\" style=\"width:100%; padding:0.75rem 1rem; background:#FAF8F5; border:1px solid rgba(26,26,26,0.12); font-size:0.875rem;\" />\n      <button type=\"submit\" class=\"w-full bg-ink text-cream px-7 py-3.5 text-[11px] uppercase tracking-[0.12em] font-bold hover:bg-burgundy transition-colors duration-300\">Track Order</button>\n    </form>\n    <div id=\"track-result\" class=\"mt-8\"></div>\n  </div></div>",
+    init: function(params) {
+document.getElementById("track-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const orderNum = e.target.querySelector('input[type="text"]').value;
+      document.getElementById("track-result").innerHTML = `
+        <div class="p-6 bg-cream-dark">
+          <p class="text-sm text-stone mb-1">Order</p>
+          <p class="font-medium text-ink mb-4">#${orderNum || "ZC000000"}</p>
+          <div class="space-y-4">
+            <div class="flex items-center gap-3"><span class="w-2.5 h-2.5 rounded-full bg-ink"></span><span class="text-sm text-ink">Order Confirmed</span></div>
+            <div class="flex items-center gap-3"><span class="w-2.5 h-2.5 rounded-full bg-ink"></span><span class="text-sm text-ink">Processing</span></div>
+            <div class="flex items-center gap-3"><span class="w-2.5 h-2.5 rounded-full border-2 border-ink/30"></span><span class="text-sm text-stone">Shipped</span></div>
+            <div class="flex items-center gap-3"><span class="w-2.5 h-2.5 rounded-full border-2 border-ink/30"></span><span class="text-sm text-stone">Out for Delivery</span></div>
+            <div class="flex items-center gap-3"><span class="w-2.5 h-2.5 rounded-full border-2 border-ink/30"></span><span class="text-sm text-stone">Delivered</span></div>
+          </div>
+          <p class="mt-5 text-xs text-stone">This is a demo tracker. Connect it to your courier's tracking API (TCS, Leopards, DHL) to show real-time status.</p>
+        </div>`;
+    });
+    }
+  }
+};
+
+/* ===== Router ===== */
+
+function parseHash() {
+  let hash = window.location.hash || "#/";
+  hash = hash.replace(/^#/, "");
+  if (!hash.startsWith("/")) hash = "/" + hash;
+  const [path, queryString] = hash.slice(1).split("?");
+  return { route: path || "", params: new URLSearchParams(queryString || "") };
+}
+
+function navigate() {
+  const { route, params } = parseHash();
+  const page = ROUTES[route] || ROUTES[""];
+  document.title = page.title;
+  document.getElementById("app").innerHTML = page.body;
+  window.scrollTo(0, 0);
+  if (typeof page.init === "function") {
+    try { page.init(params); } catch (err) { console.error("Route init error:", err); }
+  }
+  renderCartBadge();
+  if (window.lucide) lucide.createIcons();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderHeader();
+  renderFooter();
+  initMobileMenu();
+  initWishlistButtons();
+  initNewsletterForm();
+  initSearchToggle();
+  navigate();
+});
+
+window.addEventListener("hashchange", navigate);
+
+</script>
+</body>
+</html>
